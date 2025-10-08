@@ -71,3 +71,112 @@ body {
   height: 20px;
 }
 
+/* parte do carrossel */
+main {
+  width: 100%;
+}
+.slider {
+  margin: 0 auto;
+  width: 100%; 
+  height: 800px; 
+  overflow: hidden;
+  position: relative; 
+}
+.slides {
+  width: 400%; 
+  height: 400px;
+  display: flex;
+}
+.slides input {
+  display: none;
+}
+
+main {
+  width: 100%;
+}
+.slider {
+  margin: 0 auto;
+  width: 100%;
+  height: 500px; 
+  overflow: hidden;
+  position: relative; 
+}
+.slides {
+  width: 400%;
+  height: 100%; 
+  display: flex;
+}
+.slides input {
+  display: none;
+}
+
+#Carrosel { 
+  display: flex; 
+  width: 100%;
+  height: 100%; 
+  
+}
+
+.slide {
+  width: 25%; 
+  height: 100%; 
+  position: relative;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide.first {
+    transition: margin-left 0.8s ease-in-out; 
+}
+
+.slide img {
+  width: 80%; 
+  height: 100%; 
+  border-radius: 10px;
+  object-fit: fill; 
+  object-position: center; 
+}
+
+/* -- Navegação Manual -- */
+.manual-navigation {
+  position: absolute;
+  width: 100%;
+  margin-top: -25px; 
+  display: flex;
+  justify-content: center;
+  
+  bottom: 20px; 
+  margin-top: 0; /* Remova o margin-top se usar 'bottom' */
+}
+.manual-btn {
+  border: 2px solid #ffff;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 1s;
+}
+.manual-btn:not(:last-child) {
+  margin-right: 40px;
+}
+.manual-btn:hover {
+  background-color: #fff;
+}
+#radio1:checked ~ #Carrosel .first {
+  margin-left: 0;
+}
+#radio2:checked ~ #Carrosel .first {
+  margin-left: -25%; 
+}
+#radio3:checked ~ #Carrosel .first {
+  margin-left: -50%; 
+}
+.navigation-auto div{
+  border: 2px solid #20a6ff;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 1s;
+
+}
+
