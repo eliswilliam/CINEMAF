@@ -71,3 +71,109 @@ body {
   height: 20px;
 }
 
+/*CELESTINA */
+.conteiner{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color:#1a1a1a;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 25px;
+  overflow: hidden;
+  color:#ffffff;
+  font-family: 'poppins', sans-serif;
+  gap: 20px;
+
+}
+.Deadpool{
+  max-width: 75%;
+}
+.foto{
+ width: 100%;
+ border: 4px  ;
+ border-radius: 4px solid ;
+ 
+}
+.foto img{
+  width: 95%;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 0 30px #5f5dff;
+}
+
+.Deadpool p{            
+  font-size: 4 rem;
+  margin-bottom: 20px; 
+}
+.button{
+  display: inline-block;
+  padding: 5px 12px;
+  background-color: #5f5dff;
+  color: #ffffff;
+  border-radius: 50px;
+  text-decoration: none;
+}
+
+.cinira {
+  margin-top: auto; 
+  background-color: #111; 
+  padding: 10px 0;
+  text-align: center;
+}
+
+
+
+.div-nav{
+  padding: 10px 280px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8)0%, transparent 100%);
+  position:fixed;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-self: center; 
+}
+
+.nav-menu{
+  display:flex;
+  gap: 30px;
+  align-items: center;
+
+}
+.nav-menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+/*seção 2*/
+.filmes-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filme-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s, ease;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid #333;
+}
+
+.filme-image{
+  width: 100%;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+ 
+
+
