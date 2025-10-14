@@ -22,7 +22,7 @@ function filmeApp(){
             titleElement.appendChild(titleText);
             lielement.appendChild(titleElement);
             
-            
+            // Usando 'w500' para um poster de tamanho adequado
             imgElement.src = `https://image.tmdb.org/t/p/w500/${item.poster_path}`; 
             lielement.appendChild(imgElement);
             
