@@ -1,39 +1,31 @@
-let listElement = document.querySelector("#Carrosel");
+let post = [];
+let listElement = document.querySelector("#Filme");
+let listElementerror = document.querySelector("#FilmeTerror")
+function filmeApp(){
+    fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=df85c4be593e70ae32d1595288534f7a&language=pt-BR").then((r)=> r.json()).then((json)=>{
+        post = json.results;
+        post.map((item)=>{
+            let lielement = document.createElement("li");
+            let titleElement = document.createElement("h1");
+            let imgElement = document.createElement("img")
+            let buttonElement = document.createElement("button")
 
-function filmeApp() {
-    fetch(
-        "https://api.themoviedb.org/3/movie/popular?api_key=df85c4be593e70ae32d1595288534f7a&language=pt-BR"
-    )
-    .then((r) => r.json())
-    .then((json) => {
-        let post = json.results;
+            let titleText = document.createTextNode(item.title)
+            titleElement.appendChild(titleText);
+            lielement.appendChild(titleElement);
+            
+            
+            imgElement.src = `https://image.tmdb.org/t/p/original/${item.poster_path}`;
+            lielement.appendChild(imgElement);
+            
+            buttonElement.textContent = "Viziualizar"
+            lielement.appendChild(buttonElement);
 
-        
-        post.slice(0, 3).forEach((item, index) => {
-            
-            let slideElement = document.createElement("div");
-            
-            slideElement.classList.add("slide");
-
-            
-            if (index === 0) {
-                slideElement.classList.add("first");
-            }
-            
-            
-            let imgElement = document.createElement("img");
-            imgElement.src = `https://image.tmdb.org/t/p/w500/${item.poster_path}`;
-
-            
-            slideElement.appendChild(imgElement);
-
-            
-            listElement.appendChild(slideElement);
-        });
+            listElement.appendChild(lielement)
+        })
     })
-    .catch((error) => {
-        console.error("Deu algum erro ao buscar os filmes:", error);
-    });
+    .catch(()=>(
+        console.log("Deu algum erro")
+    ))
 }
-
-filmeApp();
+filmeApp()
