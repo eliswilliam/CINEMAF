@@ -1,35 +1,34 @@
-// home.js
-let post = [];
 let listElement = document.querySelector("#Carrosel");
 
-function filmeApp(){
-    fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=df85c4be593e70ae32d1595288534f7a&language=pt-BR")
+function filmeApp() {
+    fetch(
+        "https://api.themoviedb.org/3/movie/popular?api_key=df85c4be593e70ae32d1595288534f7a&language=pt-BR"
+    )
     .then((r) => r.json())
     .then((json) => {
+        let post = json.results;
+
         
-        
-        post = json.results;
-        
-        
-        post.slice(0, 10).forEach((item) => { 
-        
-            let lielement = document.createElement("li");
-            let titleElement = document.createElement("h1");
+        post.slice(0, 3).forEach((item, index) => {
+            
+            let slideElement = document.createElement("div");
+            
+            slideElement.classList.add("slide");
+
+            
+            if (index === 0) {
+                slideElement.classList.add("first");
+            }
+            
+            
             let imgElement = document.createElement("img");
-            let buttonElement = document.createElement("button");
+            imgElement.src = `https://image.tmdb.org/t/p/w500/${item.poster_path}`;
 
-            let titleText = document.createTextNode(item.title);
-            titleElement.appendChild(titleText);
-            lielement.appendChild(titleElement);
             
-            // Usando 'w500' para um poster de tamanho adequado
-            imgElement.src = `https://image.tmdb.org/t/p/w500/${item.poster_path}`; 
-            lielement.appendChild(imgElement);
-            
-            buttonElement.textContent = "Visualizar";
-            lielement.appendChild(buttonElement);
+            slideElement.appendChild(imgElement);
 
-            listElement.appendChild(lielement);
+            
+            listElement.appendChild(slideElement);
         });
     })
     .catch((error) => {
