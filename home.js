@@ -9,7 +9,7 @@ function filmeApp() {
         let post = json.results;
 
         
-        post.slice(0, 3).forEach((item, index) => {
+        post.slice(0, 10).forEach((item, index) => {
             
             let slideElement = document.createElement("div");
             
