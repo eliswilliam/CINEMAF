@@ -1,94 +1,741 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<!-- Página principal: estrutura semântica, carrosséis e integração TMDB. -->
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineHome</title>
-  <link rel="stylesheet" href="style.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <!-- Metadados e responsividade -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrossel Estilo CineHome - Versão Aprimorada</title>
+    <!-- Estilos principais da página -->
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <header class="header">
-    <div class="logo">CINE<span>HOME</span></div>
-    <div class="search-bar">
-      <input type="text" placeholder="Pesquisar filmes...">
-      <button><img src="./img/lupinha.png" class="lupa"></button>
-    </div>
-  </header>
 
-  <div class="conteiner">
-  <div class="topmovietext">
-    <h2>Deadpool 2</h2>
-    <p>O mercenário Deadpool precisa aprender o que é ser herói.
-      Para isso, ele recruta seu velho amigo Colossus e forma um novo grupo, o X-Force.</p>
-    <button>ASSISTA JÁ</button>
-  </div>
-
-  <div class="topmovieimg">
-    <img src="./img/deadpool 2.jpeg" alt="Deadpool 2">
-  </div>
-</div>
-
-
-<!-- Página inicial -->
-  <div class="div-nav">
-    <nav class="nav-menu" >
-      <a href="#página inicial">PÁGINA INICIAL</a>
-      <a href="#suspense">SUSPENSE</a>
-      <a href="#comédia">COMÉDIA</a>
-      <a href="#ação">AÇÃO</a>
-      <a href="#terror">TERROR</a>
-      <a href="#drama">DRAMA</a>
-      <a href="#ficção">FICÇÃO</a>
-      <a href="#mistério">MISTÉRIO</a>
-    </nav>
-  </div>
-
-
-<section>
-  <h2>TOP 10 EM ALTA</h2>
-  <div class="filmes-grid">
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/tudo_bem_nao_ser_normal.jpg')">
+<!-- Container principal: cabeçalho, capa e carrosséis -->
+<div class="container">
+    <!-- Cabeçalho com logotipo, barre de recherche et ações (login/configurações) -->
+    <div class="site-header" role="banner" aria-label="Cabeçalho">
+        <a href="#" class="brand-logo" aria-label="CineHome - Página inicial">
+          <span class="brand-part brand-part-cine">CINE</span><span class="brand-part brand-part-home">HOME</span>
+        </a>
+        
+        <!-- Barre de recherche -->
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Pesquisar filmes..." aria-label="Pesquisar filmes">
+            <button class="search-button" aria-label="Buscar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="header-actions">
+          <button class="btn btn-login" aria-label="Entrar">Entrar</button>
+          <button id="btn-open-settings" class="btn btn-secondary btn-settings" aria-haspopup="dialog" aria-controls="tmdb-settings-modal" aria-label="Configurar TMDB">
+            Configurar TMDB
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/the_nun.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/harry_potter.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/guerreiras_do_kpop.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/after.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/heroi_de_uma_guerra.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/velosos_furiosos_10.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/the_nun_2.jpg');"></div>
-    </div>
-    <div class="filme-card">
-      <div class="filme-image" style="background-image: url('img/lucifer.jpg');"></div>
+
+    <!-- Capa/Hero com slider, navegação e CTA -->
+    <section class="hero has-capa" aria-label="Destaques">
+        <!-- Atalhos no topo da capa -->
+        <nav class="hero-top-pill" aria-label="Atalhos da capa">
+            <a href="#mais-titulos" class="pill-link">Mais títulos para assistir</a>
+            <span class="pill-sep" aria-hidden="true"></span>
+            <a href="#planos" class="pill-link">Planos</a>
+        </nav>
+        <!-- Faixa de slides do hero; um ativo por vez -->
+        <div class="hero-slider" id="hero-slider">
+            <div class="hero-slide is-active" data-index="0">
+                <img class="hero-image" src="https://image.tmdb.org/t/p/original/4GQfEI0n0V2lxh9H9n1tFoZT3zh.jpg" alt="Destaque: Oppenheimer" loading="lazy" />
+                <div class="hero-gradient"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title">Oppenheimer</h2>
+                    <p class="hero-description">A épica história do físico J. Robert Oppenheimer e o desenvolvimento da bomba atômica.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" aria-label="Assistir Oppenheimer agora">Assistir agora</button>
+                        <button class="btn btn-secondary" aria-label="Ver detalhes de Oppenheimer">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide" data-index="1">
+                <img class="hero-image" src="https://image.tmdb.org/t/p/original/2QL5j6mB4ZpyBcVr0WO9H9MQGB8.jpg" alt="Destaque: Duna Parte Dois" loading="lazy" />
+                <div class="hero-gradient"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title">Duna: Parte Dois</h2>
+                    <p class="hero-description">Paul Atreides se une aos Fremen em uma jornada de vingança e destino no deserto de Arrakis.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" aria-label="Assistir Duna Parte Dois">Assistir agora</button>
+                        <button class="btn btn-secondary" aria-label="Ver detalhes de Duna Parte Dois">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide" data-index="2">
+                <img class="hero-image" src="https://image.tmdb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg" alt="Destaque: Vingadores Guerra Infinita" loading="lazy" />
+                <div class="hero-gradient"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title">Vingadores: Guerra Infinita</h2>
+                    <p class="hero-description">Os Vingadores enfrentam Thanos em uma batalha pelo destino do universo.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" aria-label="Assistir Guerra Infinita">Assistir agora</button>
+                        <button class="btn btn-secondary" aria-label="Ver detalhes de Guerra Infinita">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide" data-index="3">
+                <img class="hero-image" src="https://image.tmdb.org/t/p/original/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg" alt="Destaque: Top Gun Maverick" loading="lazy" />
+                <div class="hero-gradient"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title">Top Gun: Maverick</h2>
+                    <p class="hero-description">Maverick enfrenta o passado enquanto treina uma nova geração de pilotos.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" aria-label="Assistir Top Gun Maverick">Assistir agora</button>
+                        <button class="btn btn-secondary" aria-label="Ver detalhes de Top Gun Maverick">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide" data-index="4">
+                <img class="hero-image" src="https://image.tmdb.org/t/p/original/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg" alt="Destaque: Super Mario Bros O Filme" loading="lazy" />
+                <div class="hero-gradient"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title">Super Mario Bros. O Filme</h2>
+                    <p class="hero-description">Mario e Luigi embarcam em uma aventura épica no Reino dos Cogumelos.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" aria-label="Assistir Super Mario Bros">Assistir agora</button>
+                        <button class="btn btn-secondary" aria-label="Ver detalhes de Super Mario Bros">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Controles laterais do hero (prev/next) -->
+        <div class="hero-nav" aria-hidden="false">
+            <button class="nav-button left" aria-label="Slide anterior" data-hero-action="prev">&#10094;</button>
+            <button class="nav-button right" aria-label="Próximo slide" data-hero-action="next">&#10095;</button>
+        </div>
+        <!-- Dots acessíveis para navegação por slide -->
+        <div class="hero-dots" id="hero-dots" aria-label="Navegação de slides"></div>
+        <!-- Barra de progresso do auto-play -->
+        <div class="hero-progress" aria-hidden="true"><div class="fill" id="hero-progress-fill"></div></div>
+        <!-- CTA: botão principal -->
+        <div id="hero-cta" class="hero-cta" role="region" aria-label="Ação principal">
+            <button class="btn btn-primary btn-large" type="button">Assista já</button>
+        </div>
+        <!-- Curva decorativa inferior da capa -->
+        <div class="hero-curve" aria-hidden="true"></div>
+    </section>
+
+    <!-- Barra de navegação por categorias -->
+    <nav class="category-nav" role="navigation" aria-label="Navegação por categorias">
+        <div class="category-nav-container">
+            <a href="#home" class="category-link active" data-category="home">PÁGINA INICIAL</a>
+            <a href="#suspense" class="category-link" data-category="suspense">SUSPENSE</a>
+            <a href="#comedia" class="category-link" data-category="comedia">COMÉDIA</a>
+            <a href="#acao" class="category-link" data-category="acao">AÇÃO</a>
+            <a href="#terror" class="category-link" data-category="terror">TERROR</a>
+            <a href="#drama" class="category-link" data-category="drama">DRAMA</a>
+            <a href="#ficcao" class="category-link" data-category="ficcao">FICÇÃO</a>
+            <a href="#misterio" class="category-link" data-category="misterio">MISTÉRIO</a>
+        </div>
+    </nav>
+
+    <!---TOP 10 EM FILMES-->
+    <section class="top10-section">
+  <div class="section-header">
+    <h2 class="section-title"> Top 10 em filmes</h2>
+    <div class="section-gradient"></div>
+  </div> 
+  
+  <div class="carrossel-container">
+     <button class="carrossel-btn carrossel-prev" aria-label="Voltar">
+       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+      </svg>
+     </button>
+    
+     <div class="carrossel-wrapper">
+      <div class="filmes-carrossel">
+        <!-- Item 1 -->
+        <div class="filme-card top-item-1">
+          <span class="ranking-numero">1</span>
+          <div class="filme-image" style="background-image: url('img/tudo_bem_nao_ser_normal.jpg')">
+            <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Tudo Bem Não Ser Normal</h3>
+                <div class="filme-meta">
+                  <span class="ano">2020</span>
+                  <span class="classificacao">12+</span>
+                  <span class="temporadas">1 Temporada</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="filme-card top-item-2">
+          <span class="ranking-numero">2</span>
+          <div class="filme-image" style="background-image: url('img/365_dias.webp');">
+            <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">365 Dias</h3>
+                <div class="filme-meta">
+                  <span class="ano">2020</span>
+                  <span class="classificacao">18+</span>
+                  <span class="duracao">1h 56m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Itens 3 a 10 (manter mesma estrutura) -->
+        <div class="filme-card top-item-3">
+          <span class="ranking-numero">3</span>
+          <div class="filme-image" style="background-image: url('img/harry_potter.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Harry Potter e a Pedra Filosofal</h3>
+                <div class="filme-meta">
+                  <span class="ano">2001</span>
+                  <span class="classificacao">L</span>
+                  <span class="duracao">2h 32m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-4">
+          <span class="ranking-numero">4</span>
+          <div class="filme-image" style="background-image: url('img/guerreiras_do_kpop.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Guerreiras do K-pop</h3>
+                <div class="filme-meta">
+                  <span class="ano">2025</span>
+                  <span class="classificacao">10+</span>
+                  <span class="duracao">1h 36m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-5">
+          <span class="ranking-numero">5</span>
+          <div class="filme-image" style="background-image: url('img/after.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">After</h3>
+                <div class="filme-meta">
+                  <span class="ano">2019</span>
+                  <span class="classificacao">14+</span>
+                  <span class="duracao">1h 46m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-6">
+          <span class="ranking-numero">6</span>
+          <div class="filme-image" style="background-image: url('img/herois_de_uma_guerra.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Heróis de Uma Guerra</h3>
+                <div class="filme-meta">
+                  <span class="ano">2018</span>
+                  <span class="classificacao">16+</span>
+                  <span class="duracao">2h</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-7">
+          <span class="ranking-numero">7</span>
+          <div class="filme-image" style="background-image: url('img/velosos_furiosos_10.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Velosos & Furiosos 10</h3>
+                <div class="filme-meta">
+                  <span class="ano">2023</span>
+                  <span class="classificacao">14+</span>
+                  <span class="duracao">2h 22m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-8">
+          <span class="ranking-numero">8</span>
+          <div class="filme-image" style="background-image: url('img/the_nun_2.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">The Nun II</h3>
+                <div class="filme-meta">
+                  <span class="ano">2023</span>
+                  <span class="classificacao">16+</span>
+                  <span class="duracao">1h 50m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-9">
+          <span class="ranking-numero">9</span>
+          <div class="filme-image" style="background-image: url('img/lucifer.jpg');">
+            <!-- Overlay content -->
+             <div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Lucifer</h3>
+                <div class="filme-meta">
+                  <span class="ano">2016</span>
+                  <span class="classificacao">16+</span>
+                  <span class="duracao">6 Temporadas</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filme-card top-item-10">
+          <span class="ranking-numero">10</span>
+          <div class="filme-image" style="background-image: url('img/avatar_caminho_da_agua.jpg');">
+            <!-- Overlay content --><div class="filme-overlay">
+              <div class="filme-info">
+                <h3 class="filme-titulo">Avatar: O Caminho da Agua</h3>
+                <div class="filme-meta">
+                  <span class="ano">2022</span>
+                  <span class="classificacao">14+</span>
+                  <span class="duracao">2h 52m</span>
+                </div>
+                <div class="filme-actions">
+                  <button class="play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Assistir
+                  </button>
+                  <button class="info-btn">+ Info</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+     </div>
+     <button class="carrossel-btn carrossel-next" aria-label="Avançar">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+      </svg>
+     </button>
+   </div>
+
+  <div class="carrossel-indicators">
+    <button class="indicator active" data-index="0"></button>
+    <button class="indicator" data-index="1"></button>
+    <button class="indicator" data-index="2"></button>
   </div>
 </section>
-    <main>
-      
-        <ul id="Carrosel">
+    <!-- Fim da seção TOP 10 -->
 
-        </ul>
-      
+    <!-- Seção de conteúdo: Filmes Populares -->
+    <div class="section">
+        <h2 class="section-title">Filmes Populares</h2>
+        <!-- Wrapper do carrossel, controlado via JS por data-attributes -->
+        <div class="carousel-wrapper" data-carousel="popular">
+            <!-- Trilho do carrossel; os cards rolam horizontalmente -->
+            <div class="carousel" id="carousel-popular">
+                <button class="movie-card" type="button" aria-label="Filme: Vingadores Ultimato" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" alt="Vingadores: Ultimato" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Vingadores: Ultimato</div>
+                        <div class="movie-year">2019</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★★</span>
+                            <span>8.4</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Homem-Aranha" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Homem-Aranha: Sem Volta Para Casa" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Homem-Aranha: Sem Volta Para Casa</div>
+                        <div class="movie-year">2021</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★★</span>
+                            <span>8.2</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Doutor Estranho" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg" alt="Doutor Estranho no Multiverso da Loucura" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Doutor Estranho no Multiverso da Loucura</div>
+                        <div class="movie-year">2022</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>6.9</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Pantera Negra" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg" alt="Pantera Negra" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Pantera Negra</div>
+                        <div class="movie-year">2018</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>7.3</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Thor Ragnarok" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg" alt="Thor: Ragnarok" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Thor: Ragnarok</div>
+                        <div class="movie-year">2017</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>7.9</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Guardiões da Galáxia" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg" alt="Guardiões da Galáxia" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Guardiões da Galáxia</div>
+                        <div class="movie-year">2014</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>8.0</span>
+                        </div>
+                    </div>
+                </button>
+                <button class="movie-card" type="button" aria-label="Filme: Avatar: O Caminho da Água" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar: O Caminho da Água" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Avatar: O Caminho da Água</div>
+                        <div class="movie-year">2022</div>
+                        <div class="movie-rating"><span class="stars">★★★★☆</span><span>7.6</span></div>
+                    </div>
+                </button>
+                <button class="movie-card" type="button" aria-label="Filme: John Wick 4" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg" alt="John Wick 4" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">John Wick 4: Baba Yaga</div>
+                        <div class="movie-year">2023</div>
+                        <div class="movie-rating"><span class="stars">★★★★★</span><span>7.7</span></div>
+                    </div>
+                </button>
+                <button class="movie-card" type="button" aria-label="Filme: Duna" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Duna" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Duna</div>
+                        <div class="movie-year">2021</div>
+                        <div class="movie-rating"><span class="stars">★★★★★</span><span>8.0</span></div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Capitão América" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg" alt="Capitão América: Guerra Civil" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Capitão América: Guerra Civil</div>
+                        <div class="movie-year">2016</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>7.8</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Filme: Homem de Ferro" data-carousel-id="carousel-popular">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg" alt="Homem de Ferro" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Homem de Ferro</div>
+                        <div class="movie-year">2008</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>7.9</span>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+        <!-- Botões de navegação do carrossel -->
+        <button class="nav-button left" 
+            data-action="nav-left" data-target="carousel-popular"
+            aria-label="Navegar para filmes anteriores" aria-controls="carousel-popular"
+                    tabindex="0">
+                &#10094;
+            </button>
+            
+        <button class="nav-button right" 
+            data-action="nav-right" data-target="carousel-popular"
+            aria-label="Navegar para próximos filmes" aria-controls="carousel-popular"
+                    tabindex="0">
+                &#10095;
+            </button>
+            
+            <!-- Barra de progresso da posição do carrossel -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-popular"></div>
+            </div>
+        </div>
+    </div>
 
-    </main>
-  
+    <!-- Seção de conteúdo: Séries em Alta -->
+    <div class="section">
+        <h2 class="section-title">Séries em Alta</h2>
+        <!-- Wrapper do carrossel de séries -->
+        <div class="carousel-wrapper" data-carousel="series">
+            <!-- Trilho do carrossel de séries -->
+            <div class="carousel" id="carousel-series">
+                <button class="movie-card" type="button" aria-label="Série: Stranger Things" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" alt="Stranger Things" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Stranger Things</div>
+                        <div class="movie-year">2016-2025</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★★</span>
+                            <span>8.7</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Série: The Witcher" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/7vjaCdMw15FEbXyLQTVa04URsPm.jpg" alt="The Witcher" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">The Witcher</div>
+                        <div class="movie-year">2019-presente</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>8.2</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Série: La Casa de Papel" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/MoEKaPFHABtA1xKoOteirGaHl1.jpg" alt="La Casa de Papel" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">La Casa de Papel</div>
+                        <div class="movie-year">2017-2021</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>8.3</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Série: Dark" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://images-eu.ssl-images-amazon.com/images/I/617WfJD90eL.jpg" alt="Dark" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Dark</div>
+                        <div class="movie-year">2017-2020</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★★</span>
+                            <span>8.8</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Série: Breaking Bad" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" alt="Breaking Bad" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">Breaking Bad</div>
+                        <div class="movie-year">2008-2013</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★★</span>
+                            <span>9.5</span>
+                        </div>
+                    </div>
+                </button>
+                
+                <button class="movie-card" type="button" aria-label="Série: The Crown" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://www.themoviedb.org/t/p/original/hqmDLY8BSuHmldBuuUwNNt8L45G.jpg" alt="The Crown" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">The Crown</div>
+                        <div class="movie-year">2016-2023</div>
+                        <div class="movie-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span>8.6</span>
+                        </div>
+                    </div>
+                </button>
+                <button class="movie-card" type="button" aria-label="Série: The Mandalorian" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg" alt="The Mandalorian" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">The Mandalorian</div>
+                        <div class="movie-year">2019-presente</div>
+                        <div class="movie-rating"><span class="stars">★★★★★</span><span>8.5</span></div>
+                    </div>
+                </button>
+                <button class="movie-card" type="button" aria-label="Série: The Last of Us" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg" alt="The Last of Us" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">The Last of Us</div>
+                        <div class="movie-year">2023-presente</div>
+                        <div class="movie-rating"><span class="stars">★★★★★</span><span>8.7</span></div>
+                    </div>
+                </button>
+                <button class="movie-card" type="button" aria-label="Série: House of the Dragon" data-carousel-id="carousel-series">
+                    <img class="movie-image" src="https://www.ixpap.com/images/2024/07/House-of-the-Dragon-Wallpaper-36-600x1067.jpg" alt="House of the Dragon" loading="lazy">
+                    <div class="movie-info">
+                        <div class="movie-title">House of the Dragon</div>
+                        <div class="movie-year">2022-presente</div>
+                        <div class="movie-rating"><span class="stars">★★★★☆</span><span>8.4</span></div>
+                    </div>
+                </button>
+            </div>
+            
+        <!-- Botões de navegação do carrossel -->
+        <button class="nav-button left" 
+            data-action="nav-left" data-target="carousel-series"
+            aria-label="Navegar para séries anteriores" aria-controls="carousel-series"
+                    tabindex="0">
+                &#10094;
+            </button>
+            
+        <button class="nav-button right" 
+            data-action="nav-right" data-target="carousel-series"
+            aria-label="Navegar para próximas séries" aria-controls="carousel-series"
+                    tabindex="0">
+                &#10095;
+            </button>
+            
+            <!-- Barra de progresso de séries -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-series"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Modal de Configuração TMDB -->
+<!-- Modal inicia oculto; exibido/ocultado via JavaScript -->
+<div class="modal-overlay" id="tmdb-settings-modal" role="dialog" aria-modal="true" aria-labelledby="tmdb-modal-title" hidden>
+    <div class="modal-content" role="document">
+        <h3 id="tmdb-modal-title">Configurar API do TMDB</h3>
+        <p class="modal-text">Insira sua chave da API do <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a> para carregar catálogos reais. A chave será salva apenas no seu navegador (localStorage).</p>
+        <label for="tmdb-key-input" class="modal-label">API Key</label>
+        <!-- Persistida em localStorage; também pode ser lida de ?tmdb_api_key -->
+        <input id="tmdb-key-input" class="modal-input" type="text" inputmode="text" autocomplete="off" placeholder="Cole sua API key aqui" aria-describedby="tmdb-help" />
+        <small id="tmdb-help" class="modal-hint">Dica: você também pode usar ?tmdb_api_key=SUACHAVE na URL.</small>
+        <!-- Ações do modal -->
+        <div class="modal-actions">
+            <button class="btn btn-primary" id="tmdb-save">Salvar</button>
+            <button class="btn" id="tmdb-clear">Remover</button>
+            <button class="btn btn-secondary" id="tmdb-cancel">Cancelar</button>
+        </div>
+    </div>
+    <button class="modal-sr-close" aria-label="Fechar configurações" title="Fechar"></button>
+    <div class="modal-backdrop" aria-hidden="true"></div>
+</div>
 
-  <script src="home.js"></script>
+<!-- Scripts: dados estáticos, interatividade principal, fundo promocional e footer -->
+<script src="data.js" defer></script>
+<script src="index.js" defer></script>
+<script src="promo-bg.js" defer></script>
+<script src="footer.js" defer></script>
+<script src="script.js" defer></script>
 </body>
-</html>
+</html
