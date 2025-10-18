@@ -1,7 +1,7 @@
 // Configuration pour CINEHOME Frontend
 const CONFIG = {
   // URL do backend - altere conforme necessário
-  API_BASE_URL: 'http://localhost:3001', // Backend HOME-BACKEND local
+  API_BASE_URL: 'https://cinemaf.onrender.com', // Backend HOME-BACKEND local
   
   // Para produção, altere para:
   // API_BASE_URL: 'https://seu-backend-producao.com',

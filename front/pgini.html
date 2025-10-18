@@ -99,5 +99,28 @@
 
   <script src="config.js"></script>
   <script src="main.js"></script>
+  <script>
+    // Handle simple local login: set loggedIn flag and redirect to index.html
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginForm = document.getElementById('loginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const email = (document.getElementById('loginEmail') || {}).value || '';
+          // In this prototype we accept any credentials and mark the user as logged in
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('userEmail', email);
+          // Redirect to index page (page 3)
+          window.location.href = 'index.html';
+        });
+      }
+
+      // If already logged in, go back to index (optional UX)
+      if (localStorage.getItem('loggedIn') === 'true') {
+        // Redirect to index since the user is already logged in
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
 </body>
 </html>

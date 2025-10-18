@@ -8,6 +8,7 @@
     <title>Carrossel Estilo CineHome - Versão Aprimorada</title>
     <!-- Estilos principais da página -->
     <link rel="stylesheet" href="index.css">
+   
 </head>
 <body>
 
@@ -31,7 +32,7 @@
         </div>
         
         <div class="header-actions">
-          <button class="btn btn-login" aria-label="Entrar">Entrar</button>
+          <a href="pgini.html" class="btn btn-login" aria-label="Entrar">Entrar</a>
           <button id="btn-open-settings" class="btn btn-secondary btn-settings" aria-haspopup="dialog" aria-controls="tmdb-settings-modal" aria-label="Configurar TMDB">
             Configurar TMDB
           </button>
@@ -737,5 +738,37 @@
 <script src="promo-bg.js" defer></script>
 <script src="footer.js" defer></script>
 <script src="script.js" defer></script>
+<script>
+  // Replace 'Entrar' with 'Sair' when loggedIn flag is set in localStorage
+  document.addEventListener('DOMContentLoaded', function () {
+    const headerActions = document.querySelector('.header-actions');
+    if (!headerActions) return;
+
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    const loginLink = headerActions.querySelector('.btn-login');
+
+    if (isLoggedIn) {
+      // create logout button
+      const logoutBtn = document.createElement('button');
+      logoutBtn.className = 'btn btn-login btn-logout';
+      logoutBtn.type = 'button';
+      logoutBtn.setAttribute('aria-label', 'Sair');
+      logoutBtn.textContent = 'Sair';
+      logoutBtn.addEventListener('click', function () {
+        // clear login flags and redirect to login page (pgini.html)
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('userEmail');
+        // redirect to login page
+        window.location.href = 'pgini.html';
+      });
+
+      if (loginLink) {
+        loginLink.replaceWith(logoutBtn);
+      }
+    } else {
+      // Ensure the Entrar link points to pgini.html (already present) - no other changes
+    }
+  });
+</script>
 </body>
 </html
