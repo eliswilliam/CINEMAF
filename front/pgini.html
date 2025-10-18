@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CINEHOME - Seu cinema em casa!</title>
+  <link rel="icon" href="./imagens/icon.png">
+  <!-- CSS -->
+  <link rel="stylesheet" href="layout.css">
+</head>
+<body>
+<h1 class="site-title">
+  <span class="cine">CINE</span><span class="home">HOME</span>
+</h1>
+  <div class="wrapper">
+    <div class="title-text">
+      <div class="title login">Login</div>
+      <div class="title signup">Cadastre-se já!</div>
+    </div>
+
+    <div class="form-container">
+      <div class="slide-controls">
+        <input type="radio" name="slide" id="login" checked>
+        <input type="radio" name="slide" id="signup">
+        <label for="login" class="slide login">Login</label>
+        <label for="signup" class="slide signup">Cadastro</label>
+        <div class="slider-tab"></div>
+      </div>
+
+      <div class="form-inner">
+        <!-- Formulaire de LOGIN modifié -->
+        <form id="loginForm" class="login">
+          <div class="field">
+            <input type="email" id="loginEmail" placeholder="Endereço de e-mail" required>
+          </div>
+          <div class="field">
+            <input type="password" id="loginPassword" placeholder="Senha" required>
+          </div>
+          <div class="pass-link"><a href="#">Esqueceu a senha?</a></div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Entrar">
+          </div>
+          <div class="signup-link">Novo aqui? <a href="#">Cadastre-se agora!</a></div>
+        </form>
+
+        <!-- Formulaire de CADASTRO modifié -->
+        <form id="signupForm" class="signup">
+          <div class="field">
+            <input type="email" id="signupEmail" placeholder="Endereço de e-mail" required>
+          </div>
+          <div class="field">
+            <input type="password" id="signupPassword" placeholder="Senha" required>
+          </div>
+          <div class="field">
+            <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Cadastre-se">
+          </div>
+        </form>
+
+        <!-- Formulaire de récupération de mot de passe -->
+        <form id="forgotPasswordForm" class="forgot-password" style="display: none;">
+          <div class="field">
+            <input type="email" id="forgotEmail" placeholder="Digite seu e-mail" required>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Enviar código">
+          </div>
+          <div class="back-link"><a href="#" id="backToLogin">Voltar ao login</a></div>
+        </form>
+
+        <!-- Formulaire de vérification du code -->
+        <form id="verifyCodeForm" class="verify-code" style="display: none;">
+          <div class="field">
+            <input type="text" id="verificationCode" placeholder="Digite o código recebido" required maxlength="6">
+          </div>
+          <div class="field">
+            <input type="password" id="newPassword" placeholder="Nova senha" required>
+          </div>
+          <div class="field">
+            <input type="password" id="confirmNewPassword" placeholder="Confirme a nova senha" required>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Redefinir senha">
+          </div>
+          <div class="back-link"><a href="#" id="backToForgot">Voltar</a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message d'erreur/succès -->
+  <div id="messageContainer" class="message-container"></div>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

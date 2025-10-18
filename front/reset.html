@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Redefinir senha</title>
+    <link rel="stylesheet" href="/layout.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="title-text">
+        <div class="title login">Redefinir senha</div>
+      </div>
+
+      <div class="form-container">
+        <div class="form-inner">
+          <form id="resetForm" class="forgot-password">
+            <div class="field">
+              <input id="newPassword" type="password" placeholder="Nova senha" required minlength="6">
+            </div>
+            <div class="field">
+              <input id="confirmPassword" type="password" placeholder="Confirme a nova senha" required minlength="6">
+            </div>
+
+            <div class="btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Redefinir senha">
+            </div>
+
+            <div class="back-link">
+              <a href="index.html">Voltar</a>
+            </div>
+            <p id="info" style="color:#F0F0F0;margin-top:12px;text-align:center">Carregando...</p>
+            <div class="msg" id="message" style="color:#F0F0F0;text-align:center;margin-top:8px"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const resetToken = params.get('reset_token') || params.get('resetToken') || '';
+      const source = params.get('source') || '';
+      const info = document.getElementById('info');
+      const message = document.getElementById('message');
+      const form = document.getElementById('resetForm');
+
+      if (!resetToken) {
+        info.textContent = 'Token de redefinição ausente. Use o link enviado por email.';
+        form.style.display = 'none';
+      } else {
+        info.textContent = source ? `Redefinindo via ${source}.` : 'Insira sua nova senha.';
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        message.textContent = '';
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (newPassword !== confirmPassword) return message.textContent = 'As senhas não coincidem.';
+        try {
+          const res = await fetch('/api/users/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ resetToken, newPassword })
+          });
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || 'Erro ao redefinir senha');
+          }
+          const data = await res.json();
+          message.textContent = data.message || 'Senha redefinida com sucesso';
+          setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+        } catch (err) {
+          message.textContent = err.message;
+        }
+      });
+    </script>
+  </body>
+</html>
