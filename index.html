@@ -5,21 +5,24 @@
     <!-- Metadados e responsividade -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrossel Estilo CineHome - Versão Aprimorada</title>
+    <link rel="icon" type="image/png" href="img/favicon.ico"/>
+    <title>CineHome | Seu cinema em casa</title>
     <!-- Estilos principais da página -->
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
 <!-- Container principal: cabeçalho, capa e carrosséis -->
 <div class="container">
-    <!-- Cabeçalho com logotipo, barre de recherche et ações (login/configurações) -->
+    <!-- Cabeçalho com logotipo, barra de pesquisa e ações (login/configurações) -->
     <div class="site-header" role="banner" aria-label="Cabeçalho">
         <a href="#" class="brand-logo" aria-label="CineHome - Página inicial">
           <span class="brand-part brand-part-cine">CINE</span><span class="brand-part brand-part-home">HOME</span>
         </a>
         
-        <!-- Barre de recherche -->
+        <!-- Barra de pesquisa -->
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Pesquisar filmes..." aria-label="Pesquisar filmes">
             <button class="search-button" aria-label="Buscar">
@@ -31,7 +34,7 @@
         </div>
         
         <div class="header-actions">
-          <button class="btn btn-login" aria-label="Entrar">Entrar</button>
+          <button class="btn btn-login" aria-label="Entrar">Login</button>
           <button id="btn-open-settings" class="btn btn-secondary btn-settings" aria-haspopup="dialog" aria-controls="tmdb-settings-modal" aria-label="Configurar TMDB">
             Configurar TMDB
           </button>
@@ -129,7 +132,7 @@
     <!-- Barra de navegação por categorias -->
     <nav class="category-nav" role="navigation" aria-label="Navegação por categorias">
         <div class="category-nav-container">
-            <a href="#home" class="category-link active" data-category="home">PÁGINA INICIAL</a>
+            <a href="#home" class="category-link" data-category="home">PÁGINA INICIAL</a>
             <a href="#suspense" class="category-link" data-category="suspense">SUSPENSE</a>
             <a href="#comedia" class="category-link" data-category="comedia">COMÉDIA</a>
             <a href="#acao" class="category-link" data-category="acao">AÇÃO</a>
@@ -139,299 +142,6 @@
             <a href="#misterio" class="category-link" data-category="misterio">MISTÉRIO</a>
         </div>
     </nav>
-
-    <!---TOP 10 EM FILMES-->
-    <section class="top10-section">
-  <div class="section-header">
-    <h2 class="section-title"> Top 10 em filmes</h2>
-    <div class="section-gradient"></div>
-  </div> 
-  
-  <div class="carrossel-container">
-     <button class="carrossel-btn carrossel-prev" aria-label="Voltar">
-       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-      </svg>
-     </button>
-    
-     <div class="carrossel-wrapper">
-      <div class="filmes-carrossel">
-        <!-- Item 1 -->
-        <div class="filme-card top-item-1">
-          <span class="ranking-numero">1</span>
-          <div class="filme-image" style="background-image: url('img/tudo_bem_nao_ser_normal.jpg')">
-            <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Tudo Bem Não Ser Normal</h3>
-                <div class="filme-meta">
-                  <span class="ano">2020</span>
-                  <span class="classificacao">12+</span>
-                  <span class="temporadas">1 Temporada</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="filme-card top-item-2">
-          <span class="ranking-numero">2</span>
-          <div class="filme-image" style="background-image: url('img/365_dias.webp');">
-            <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">365 Dias</h3>
-                <div class="filme-meta">
-                  <span class="ano">2020</span>
-                  <span class="classificacao">18+</span>
-                  <span class="duracao">1h 56m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Itens 3 a 10 (manter mesma estrutura) -->
-        <div class="filme-card top-item-3">
-          <span class="ranking-numero">3</span>
-          <div class="filme-image" style="background-image: url('img/harry_potter.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Harry Potter e a Pedra Filosofal</h3>
-                <div class="filme-meta">
-                  <span class="ano">2001</span>
-                  <span class="classificacao">L</span>
-                  <span class="duracao">2h 32m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-4">
-          <span class="ranking-numero">4</span>
-          <div class="filme-image" style="background-image: url('img/guerreiras_do_kpop.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Guerreiras do K-pop</h3>
-                <div class="filme-meta">
-                  <span class="ano">2025</span>
-                  <span class="classificacao">10+</span>
-                  <span class="duracao">1h 36m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-5">
-          <span class="ranking-numero">5</span>
-          <div class="filme-image" style="background-image: url('img/after.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">After</h3>
-                <div class="filme-meta">
-                  <span class="ano">2019</span>
-                  <span class="classificacao">14+</span>
-                  <span class="duracao">1h 46m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-6">
-          <span class="ranking-numero">6</span>
-          <div class="filme-image" style="background-image: url('img/herois_de_uma_guerra.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Heróis de Uma Guerra</h3>
-                <div class="filme-meta">
-                  <span class="ano">2018</span>
-                  <span class="classificacao">16+</span>
-                  <span class="duracao">2h</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-7">
-          <span class="ranking-numero">7</span>
-          <div class="filme-image" style="background-image: url('img/velosos_furiosos_10.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Velosos & Furiosos 10</h3>
-                <div class="filme-meta">
-                  <span class="ano">2023</span>
-                  <span class="classificacao">14+</span>
-                  <span class="duracao">2h 22m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-8">
-          <span class="ranking-numero">8</span>
-          <div class="filme-image" style="background-image: url('img/the_nun_2.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">The Nun II</h3>
-                <div class="filme-meta">
-                  <span class="ano">2023</span>
-                  <span class="classificacao">16+</span>
-                  <span class="duracao">1h 50m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-9">
-          <span class="ranking-numero">9</span>
-          <div class="filme-image" style="background-image: url('img/lucifer.jpg');">
-            <!-- Overlay content -->
-             <div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Lucifer</h3>
-                <div class="filme-meta">
-                  <span class="ano">2016</span>
-                  <span class="classificacao">16+</span>
-                  <span class="duracao">6 Temporadas</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="filme-card top-item-10">
-          <span class="ranking-numero">10</span>
-          <div class="filme-image" style="background-image: url('img/avatar_caminho_da_agua.jpg');">
-            <!-- Overlay content --><div class="filme-overlay">
-              <div class="filme-info">
-                <h3 class="filme-titulo">Avatar: O Caminho da Agua</h3>
-                <div class="filme-meta">
-                  <span class="ano">2022</span>
-                  <span class="classificacao">14+</span>
-                  <span class="duracao">2h 52m</span>
-                </div>
-                <div class="filme-actions">
-                  <button class="play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Assistir
-                  </button>
-                  <button class="info-btn">+ Info</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      </div>
-     </div>
-     <button class="carrossel-btn carrossel-next" aria-label="Avançar">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-      </svg>
-     </button>
-   </div>
-
-  <div class="carrossel-indicators">
-    <button class="indicator active" data-index="0"></button>
-    <button class="indicator" data-index="1"></button>
-    <button class="indicator" data-index="2"></button>
-  </div>
-</section>
-    <!-- Fim da seção TOP 10 -->
 
     <!-- Seção de conteúdo: Filmes Populares -->
     <div class="section">
@@ -615,7 +325,7 @@
                 </button>
                 
                 <button class="movie-card" type="button" aria-label="Série: La Casa de Papel" data-carousel-id="carousel-series">
-                    <img class="movie-image" src="https://image.tmdb.org/t/p/w500/MoEKaPFHABtA1xKoOteirGaHl1.jpg" alt="La Casa de Papel" loading="lazy">
+                    <img class="movie-image" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/7C0cpMy6AkWSGECDyWPrw93WJHu.jpg" alt="La Casa de Papel" loading="lazy">
                     <div class="movie-info">
                         <div class="movie-title">La Casa de Papel</div>
                         <div class="movie-year">2017-2021</div>
