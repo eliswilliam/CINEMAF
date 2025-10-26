@@ -96,6 +96,11 @@
       document.documentElement.lang = val;
       localStorage.setItem('app_lang', val);
       announcer.textContent = `Idioma alterado para ${select.options[select.selectedIndex].text}`;
+      
+      // Aplicar traduções se a função existir
+      if (typeof window.applyTranslations === 'function') {
+        window.applyTranslations(val);
+      }
     });
     wrapper.append(label, select, announcer);
     return wrapper;
@@ -114,15 +119,15 @@
     nav.setAttribute('aria-label', 'Rodapé'); // região navegável do rodapé
 
     const institutional = createSection('Institucional', [
-      { href: 'https://help.CineHome.com/pt', label: 'Central de Ajuda' },
-      { href: 'https://help.CineHome.com/legal/termsofuse', label: 'Termos de Uso' },
-      { href: 'https://help.CineHome.com/legal/privacy', label: 'Privacidade' }
+      { href: '#ajuda', label: 'Central de Ajuda' },
+      { href: '#termos', label: 'Termos de Uso' },
+      { href: '#privacidade', label: 'Privacidade' }
     ]);
 
     const about = createSection('Sobre', [
-      { href: 'https://help.CineHome.com/legal/corpinfo', label: 'Informações corporativas' },
-      { href: 'https://help.CineHome.com/legal/notices', label: 'Avisos legais' },
-      { href: 'https://help.CineHome.com/legal', label: 'Centro de Ajuda Legal' }
+      { href: '#corporativa', label: 'Informações corporativas' },
+      { href: '#avisos', label: 'Avisos legais' },
+      { href: '#legal', label: 'Centro de Ajuda Legal' }
     ]);
 
     nav.append(institutional, about);

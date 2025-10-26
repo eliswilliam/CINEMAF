@@ -276,20 +276,6 @@ body {
 
 .category-link.active {
     color: #ffffff;
-    border-bottom-color: var(--accent-color);
-}
-
-.category-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background: var(--accent-color);
-    border-radius: 50%;
-    margin-bottom: -3px;
 }
 
 @media (max-width: 768px) {
