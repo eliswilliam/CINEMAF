@@ -14,7 +14,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
 router.get('/auth/github', (_req, res) => {
   // build redirectUri dynamically from request host so port mismatches are avoided
   const host = _req.get('host');
-  const protocol = _req.protocol;
+  // Detect HTTPS from proxy headers (Render uses x-forwarded-proto)
+  const protocol = _req.get('x-forwarded-proto') || _req.protocol;
   const redirectUri = `${protocol}://${host}/auth/github/callback`;
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) return res.status(500).send('GITHUB_CLIENT_ID not configured');
@@ -28,7 +29,8 @@ router.get('/auth/github/callback', async (req, res) => {
   try {
     // Use the same redirectUri pattern (host-aware) when exchanging token
     const host = req.get('host');
-    const protocol = req.protocol;
+    // Detect HTTPS from proxy headers (Render uses x-forwarded-proto)
+    const protocol = req.get('x-forwarded-proto') || req.protocol;
     const redirectUri = `${protocol}://${host}/auth/github/callback`;
 
     const tokenRes = await axios.post(
@@ -78,7 +80,8 @@ router.get('/auth/google', (_req, res) => {
   
   // build redirectUri dynamically from request host so it always matches the callback
   const host = _req.get('host');
-  const protocol = _req.protocol;
+  // Detect HTTPS from proxy headers (Render uses x-forwarded-proto)
+  const protocol = _req.get('x-forwarded-proto') || _req.protocol;
   const redirectUri = `${protocol}://${host}/auth/google/callback`;
   
   console.log('🌐 Configuration:');
@@ -124,7 +127,8 @@ router.get('/auth/google/callback', async (req, res) => {
   try {
     // build redirectUri dynamically from request host (must match initial auth request)
     const host = req.get('host');
-    const protocol = req.protocol;
+    // Detect HTTPS from proxy headers (Render uses x-forwarded-proto)
+    const protocol = req.get('x-forwarded-proto') || req.protocol;
     const redirectUri = `${protocol}://${host}/auth/google/callback`;
     
     console.log('🌐 Configuration callback:');
