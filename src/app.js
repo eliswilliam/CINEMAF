@@ -45,14 +45,15 @@ app.use('/', emailRoutes);
 
 // Servir les fichiers frontend EN DERNIER pour ne pas interférer avec les routes API
 // __dirname = CINEHOMEBACK/src
-// Remonter vers CINEHOMEBACK (..) puis vers le dossier parent (..) puis CINEHOME---Homepage
-const frontendPath = path.join(__dirname, '..', '..', 'CINEHOME---Homepage');
+// Le frontend est maintenant dans CINEHOMEBACK/public
+const frontendPath = path.join(__dirname, '..', 'public');
 console.log('📁 Frontend path:', frontendPath);
 
 // Vérifier si le dossier existe
 const fs = require('fs');
 if (!fs.existsSync(frontendPath)) {
   console.error('❌ ERREUR: Le dossier frontend n\'existe pas:', frontendPath);
+  console.warn('💡 Le dossier public/ doit contenir les fichiers HTML du frontend');
 } else {
   console.log('✅ Dossier frontend trouvé');
   
@@ -61,6 +62,7 @@ if (!fs.existsSync(frontendPath)) {
   console.log('📄 Fichiers HTML disponibles:', htmlFiles.join(', '));
 }
 
+// Servir les fichiers statiques (HTML, CSS, JS, images)
 app.use(express.static(frontendPath));
 
 // Port dynamique pour Render ou valeur par défaut pour local

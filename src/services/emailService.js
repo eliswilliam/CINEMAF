@@ -37,15 +37,23 @@ exports.sendVerificationCode = async (toEmail, code) => {
     console.log(`   User: ${process.env.EMAIL_USER}`);
     
     // Configuration du transporteur
+    // Utiliser port 587 avec STARTTLS pour éviter les problèmes de firewall sur Render
     const transporter = nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE || 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // true pour port 465, false pour autres ports
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD
+      },
+      tls: {
+        rejectUnauthorized: true
       }
     });
     
     console.log('✅ Transporteur créé avec succès');
+    console.log('   Host: smtp.gmail.com');
+    console.log('   Port: 587 (STARTTLS)');
 
     // Template HTML pour l'email
     const htmlContent = `
