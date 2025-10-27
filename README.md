@@ -1,7 +1,7 @@
 ﻿# 🎬 CineHome - Plataforma de Avaliação de Filmes
 
 
-<img width="800" height="800" alt="CINEHOME - Apresentação" src="https://github.com/user-attachments/assets/77c92402-03ef-4cbe-a4d2-53a50cc2ede2" />
+<img width="600" height="600" alt="CINEHOME - Apresentação" src="https://github.com/user-attachments/assets/77c92402-03ef-4cbe-a4d2-53a50cc2ede2" />
 
 
 ## 🚀 Tecnologias Utilizadas
@@ -212,4 +212,5 @@ Planejo implementar:
 ## 📄 Licença
 
 Este projeto foi desenvolvido para fins educacionais e de portfólio.
+
 
