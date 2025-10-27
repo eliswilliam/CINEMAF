@@ -1,6 +1,4 @@
-// Dataset local (fallback) para popular seções e, opcionalmente, a capa.
-// Fonte de imagens: TMDB CDN. Para uso em produção com a API do TMDB, é necessário uma API key e atribuição.
-// Este arquivo define window.APP_DATA para ser consumido por index.js.
+ 
 
 window.APP_DATA = {
   hero: [
