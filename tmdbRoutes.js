@@ -13,7 +13,10 @@ const { searchAndFormatMovie, searchMovie, getMovieDetails, formatMovieInfo } = 
 router.post('/search', async (req, res) => {
   const { query } = req.body;
 
+  console.log('📥 Requête de recherche TMDB reçue:', { query });
+
   if (!query || query.trim().length < 2) {
+    console.warn('⚠️ Requête invalide: query trop court');
     return res.status(400).json({ 
       error: 'Digite pelo menos 2 caracteres para pesquisar' 
     });
@@ -21,9 +24,11 @@ router.post('/search', async (req, res) => {
 
   try {
     // Rechercher dans TMDB
+    console.log('🔍 Recherche TMDB en cours pour:', query.trim());
     const searchResults = await searchMovie(query.trim(), 'pt-BR');
     
     if (!searchResults.results || searchResults.results.length === 0) {
+      console.log('ℹ️ Aucun résultat trouvé pour:', query);
       return res.json({
         success: true,
         results: [],
@@ -48,6 +53,8 @@ router.post('/search', async (req, res) => {
       source: 'tmdb' // Indicador que vem do TMDB
     }));
 
+    console.log(`✅ ${formattedResults.length} résultats formatés envoyés au frontend`);
+    
     res.json({
       success: true,
       results: formattedResults,
@@ -58,10 +65,11 @@ router.post('/search', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Erro ao pesquisar no TMDB:', error.message);
+    console.error('❌ Erro ao pesquisar no TMDB:', error.message);
     
     // Retornar erro apropriado
     if (error.message.includes('Chave API')) {
+      console.error('🔑 Chave API TMDB não configurada');
       return res.status(503).json({ 
         error: 'Serviço de busca temporariamente indisponível. Configure a chave TMDB_API_KEY no backend.',
         fallbackToLocal: true
