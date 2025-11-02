@@ -207,6 +207,41 @@ async function searchAndFormatMovie(query) {
   }
 }
 
+/**
+ * Busca múltiplos filmes no TMDB e retorna em formato simplificado para a barra de pesquisa
+ * @param {string} query - Termo de busca
+ * @param {number} maxResults - Número máximo de resultados (padrão: 10)
+ * @returns {Promise<Array>} - Array de filmes formatados
+ */
+async function searchMoviesInTMDB(query, maxResults = 10) {
+  try {
+    const searchResults = await searchMovie(query);
+    
+    if (!searchResults.results || searchResults.results.length === 0) {
+      return [];
+    }
+    
+    // Limitar número de resultados
+    const results = searchResults.results.slice(0, maxResults);
+    
+    // Formatar cada resultado
+    return results.map(movie => ({
+      title: movie.title || movie.original_title,
+      year: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
+      rating: movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A',
+      description: movie.overview || 'Sinopse não disponível',
+      poster: movie.poster_path ? `${TMDB_IMAGE_BASE_URL}${movie.poster_path}` : null,
+      backdrop: movie.backdrop_path ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}` : null,
+      popularity: movie.popularity || 0,
+      voteCount: movie.vote_count || 0,
+      source: 'TMDB' // Indica que veio do TMDB
+    }));
+  } catch (error) {
+    console.error('Erro ao buscar filmes no TMDB:', error.message);
+    return [];
+  }
+}
+
 module.exports = {
   searchMovie,
   getMovieDetails,
@@ -214,5 +249,6 @@ module.exports = {
   getTopRatedMovies,
   formatMovieInfo,
   searchAndFormatMovie,
+  searchMoviesInTMDB,
   getTMDBApiKey
 };

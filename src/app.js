@@ -9,6 +9,7 @@ const emailRoutes = require('./email');
 const emailService = require('./services/emailService');
 const groqaiRoutes = require('../groqai');
 const tmdbRoutes = require('../tmdbRoutes');
+const searchRoutes = require('../searchRoutes');
 
 const app = express();
 
@@ -46,6 +47,9 @@ app.use('/api', groqaiRoutes);
 
 // Routes TMDB Search
 app.use('/api/tmdb', tmdbRoutes);
+
+// Routes Search (local + TMDB)
+app.use('/api', searchRoutes);
 
 // Routes OAuth - priorité 2
 // Les routes dans email.js incluent déjà /auth/ dans leur chemin
