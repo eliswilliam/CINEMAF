@@ -92,7 +92,7 @@ const translations = {
     
     // Categories
     'nav.home': 'HOME',
-    'nav.suspense': 'SUSPENSE',
+    'nav.suspense': 'THRILLER',
     'nav.comedy': 'COMEDY',
     'nav.action': 'ACTION',
     'nav.horror': 'HORROR',
@@ -156,7 +156,7 @@ const translations = {
     
     // Categories
     'nav.home': 'INICIO',
-    'nav.suspense': 'SUSPENSE',
+    'nav.suspense': 'SUSPENSO',
     'nav.comedy': 'COMEDIA',
     'nav.action': 'ACCIÓN',
     'nav.horror': 'TERROR',
