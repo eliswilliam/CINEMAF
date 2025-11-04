@@ -57,10 +57,13 @@
         categoryLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
+                
                 const category = link.dataset.category;
                 
-                // Mettre à jour l'URL
-                window.location.hash = category;
+                // Mettre à jour l'URL sans recharger la page
+                const newUrl = category === 'home' ? window.location.pathname : `${window.location.pathname}#${category}`;
+                window.history.pushState({ category }, '', newUrl);
                 
                 // Afficher la catégorie
                 showCategory(category);
@@ -110,8 +113,11 @@
         categorySection.innerHTML = html;
         categorySection.classList.add('active');
         
-        // Scroll vers le haut
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Scroll vers le haut avec animation fluide
+        const categoryNav = document.querySelector('.category-nav');
+        if (categoryNav) {
+            categoryNav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
     // Générer les étoiles en fonction de la note
@@ -132,7 +138,7 @@
     // Créer le HTML d'une carte
     function createCardHTML(item) {
         return `
-            <div class="category-card">
+            <div class="category-card" onclick="window.location.href='movie-details.html?title=${encodeURIComponent(item.title)}'" style="cursor: pointer;">
                 <img class="category-card-image" 
                      src="${item.image}" 
                      alt="${item.title}"
@@ -197,8 +203,23 @@
         }
     }
 
-    // Gérer le changement de hash
-    window.addEventListener('hashchange', loadCategoryFromHash);
+    // Gérer le changement de hash et le bouton retour
+    window.addEventListener('hashchange', (e) => {
+        e.preventDefault();
+        loadCategoryFromHash();
+    });
+    
+    window.addEventListener('popstate', (e) => {
+        if (e.state && e.state.category) {
+            const link = document.querySelector(`[data-category="${e.state.category}"]`);
+            if (link) {
+                showCategory(e.state.category);
+                updateActiveLink(link);
+            }
+        } else {
+            loadCategoryFromHash();
+        }
+    });
 
     // Initialiser quand le DOM est prêt
     if (document.readyState === 'loading') {

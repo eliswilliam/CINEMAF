@@ -1,5 +1,17 @@
 /* Styles pour les résultats de recherche */
 
+/* Input de recherche avec erreur */
+.search-input-error {
+    border-color: #EF4444 !important;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
 /* Overlay de résultats de recherche */
 .search-results-overlay {
     display: none;

@@ -91,18 +91,8 @@
       helpBtn.addEventListener('click', function() {
         console.log('Central de ajuda');
         closeDropdown();
-        // Open help section using the footer content system
-        const helpSection = document.getElementById('ajuda');
-        if (helpSection) {
-          // Use the global footerContent function if available
-          if (window.footerContent && window.footerContent.open) {
-            window.footerContent.open('ajuda');
-          } else {
-            // Fallback method
-            helpSection.classList.add('active');
-            document.body.style.overflow = 'hidden';
-          }
-        }
+        // Redirect to ajuda.html page
+        window.location.href = 'ajuda.html';
       });
     }
 

@@ -81,7 +81,7 @@ async function fetchTMDB(path, params = {}) {
  * Normaliza um item retornado pelo TMDB para o formato usado pelo app.
  * Extrai título, ano, nota, pôster, backdrop e overview.
  * @param {any} item Objeto de mídia do TMDB
- * @returns {{title:string, year:string, rating:string, poster:string, backdrop:string, overview:string}} Objeto de mídia normalizado
+ * @returns {{id:number, title:string, year:string, rating:string, poster:string, backdrop:string, overview:string}} Objeto de mídia normalizado
  */
 function mapMedia(item) {
   const title = item.title || item.name || 'Título';
@@ -89,6 +89,7 @@ function mapMedia(item) {
   const year = date ? new Date(date).getFullYear() : '';
   const rating = typeof item.vote_average === 'number' ? item.vote_average.toFixed(1) : '';
   return {
+    id: item.id || 0,
     title,
     year: String(year || ''),
     rating,
@@ -116,7 +117,7 @@ function ensureTmdbAttribution() {
 /**
  * Cria o elemento de card de filme/série para o carrossel.
  * Inclui imagem, título, ano e nota, com atributos de acessibilidade.
- * @param {{title:string, year:string, rating:string, poster:string, backdrop:string}} item Mídia normalizada
+ * @param {{id?:number, title:string, year:string, rating:string, poster:string, backdrop:string}} item Mídia normalizada
  * @param {string} carouselId ID do carrossel no qual o card será inserido
  * @returns {HTMLButtonElement} Elemento de botão representando o card
  */
@@ -126,6 +127,10 @@ function buildCard(item, carouselId) {
   btn.type = 'button';
   btn.setAttribute('aria-label', `Título: ${item.title}`);
   btn.setAttribute('data-carousel-id', carouselId);
+  // Armazenar o ID TMDB se disponível
+  if (item.id) {
+    btn.setAttribute('data-tmdb-id', item.id);
+  }
   const imgSrc = item.poster || item.backdrop || '';
   btn.innerHTML = `
     <img class="movie-image" src="${imgSrc}" alt="${item.title}" loading="lazy" data-poster="${item.poster || ''}" data-backdrop="${item.backdrop || ''}">
@@ -165,6 +170,10 @@ async function populateFromTMDB() {
         const slide = document.createElement('div');
         slide.className = 'hero-slide' + (idx === 0 ? ' is-active' : '');
         slide.setAttribute('data-index', String(idx));
+        // Armazenar o ID TMDB no slide
+        if (h.id) {
+          slide.setAttribute('data-tmdb-id', h.id);
+        }
         const imgSrc = h.backdrop || h.poster;
         slide.innerHTML = `
           <img class="hero-image" src="${imgSrc}" alt="Destaque: ${h.title}" loading="lazy" />
@@ -388,23 +397,25 @@ class MovieCarousel {
     }, { passive: true });
   }
   /**
-   * Efeito de seleção do card e anúncio acessível via `aria-live`.
+   * Efeito de seleção do card e redireciona para a página de detalhes.
     * @param {HTMLElement} card Card selecionado
     * @returns {void}
    */
   selectMovie(card) {
     const title = card.querySelector('.movie-title')?.textContent || 'Filme selecionado';
+    const tmdbId = card.getAttribute('data-tmdb-id');
+    
+    // Animação visual breve antes da redireção
     card.style.transform = `scale(${UI_CONST.CARD_SELECT_SCALE})`;
-    setTimeout(() => { card.style.transform = ''; }, UI_CONST.SELECT_ANIMATION_MS);
-    console.log(`Filme selecionado: ${title}`);
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.style.position = 'absolute';
-    announcement.style.left = `${UI_CONST.HIDE_OFFSCREEN_LEFT_PX}px`;
-    announcement.textContent = `${title} selecionado`;
-    document.body.appendChild(announcement);
-    setTimeout(() => { document.body.removeChild(announcement); }, UI_CONST.ANNOUNCE_TIMEOUT_MS);
+    
+    setTimeout(() => {
+      // Redirecionar para a página de detalhes
+      if (tmdbId) {
+        window.location.href = `movie-details.html?id=${tmdbId}&title=${encodeURIComponent(title)}`;
+      } else if (title) {
+        window.location.href = `movie-details.html?title=${encodeURIComponent(title)}`;
+      }
+    }, UI_CONST.SELECT_ANIMATION_MS);
   }
   /**
    * Anuncia a direção de navegação para leitores de tela.

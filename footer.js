@@ -1,4 +1,4 @@
-// Monta dinamicamente o rodapé com navegação, social e seletor de idioma.
+// Monta dinamicamente o rodapé com navegação e redes sociais.
 // Foco em acessibilidade: títulos SR-only, ARIA labels e aria-live.
 (() => {
   const createLink = (href, label) => {
@@ -67,44 +67,7 @@
     return a;
   };
 
-  const createLanguageSelector = () => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'footer-lang';
-    const label = document.createElement('label');
-    label.className = 'footer-lang-label';
-    label.textContent = 'Idioma';
-    label.htmlFor = 'footer-language-select';
-    const select = document.createElement('select');
-    select.id = 'footer-language-select';
-    select.className = 'footer-select';
-    const langs = [
-      { code: 'pt-BR', label: 'Português' },
-      { code: 'en-US', label: 'English' },
-      { code: 'es-ES', label: 'Español' }
-    ];
-    const saved = localStorage.getItem('app_lang') || document.documentElement.lang || 'pt-BR';
-    langs.forEach(l => {
-      const opt = document.createElement('option');
-      opt.value = l.code; opt.textContent = l.label; opt.selected = l.code === saved;
-      select.appendChild(opt);
-    });
-    const announcer = document.createElement('div');
-    announcer.setAttribute('aria-live', 'polite'); // anuncia mudanças de idioma (SR-only)
-    announcer.className = 'sr-only';
-    select.addEventListener('change', () => {
-      const val = select.value;
-      document.documentElement.lang = val;
-      localStorage.setItem('app_lang', val);
-      announcer.textContent = `Idioma alterado para ${select.options[select.selectedIndex].text}`;
-      
-      // Aplicar traduções se a função existir
-      if (typeof window.applyTranslations === 'function') {
-        window.applyTranslations(val);
-      }
-    });
-    wrapper.append(label, select, announcer);
-    return wrapper;
-  };
+
 
   const buildFooter = () => {
     const footer = document.createElement('footer');
@@ -149,9 +112,7 @@
     const year = new Date().getFullYear();
     copy.textContent = `© ${year} CineHome Brasil`;
 
-    const lang = createLanguageSelector();
-
-    bottom.append(social, copy, lang);
+    bottom.append(social, copy);
     container.append(nav, bottom);
     footer.appendChild(container);
     return footer;
