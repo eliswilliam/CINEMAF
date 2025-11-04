@@ -138,7 +138,7 @@
     // Créer le HTML d'une carte
     function createCardHTML(item) {
         return `
-            <div class="category-card">
+            <div class="category-card" onclick="window.location.href='movie-details.html?title=${encodeURIComponent(item.title)}'" style="cursor: pointer;">
                 <img class="category-card-image" 
                      src="${item.image}" 
                      alt="${item.title}"

@@ -694,7 +694,47 @@
                 loadProfiles();
             }
         });
+
+        // Gérer le retour OAuth Google (token dans l'URL)
+        const urlParams = new URLSearchParams(window.location.search);
+        const oauthToken = urlParams.get('token');
+        const oauthEmail = urlParams.get('email');
+        const isNewUser = urlParams.get('new');
+        const isExistingUser = urlParams.get('existing');
+
+        if (oauthToken && oauthEmail) {
+            console.log('✅ Token OAuth reçu, sauvegarde...');
+            localStorage.setItem('token', oauthToken);
+            localStorage.setItem('userEmail', oauthEmail);
+            
+            // Nettoyer l'URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Afficher un message de bienvenue
+            if (isNewUser === 'true') {
+                console.log('🎉 Nouveau compte créé via Google!');
+                if (typeof notify !== 'undefined') {
+                    notify.success('Bem-vindo!', 'Conta criada com sucesso via Google!');
+                }
+            } else if (isExistingUser === 'true') {
+                console.log('✅ Connexion réussie via Google (compte existant)');
+                if (typeof notify !== 'undefined') {
+                    notify.success('Bem-vindo de volta!', 'Login realizado com Google!');
+                }
+            } else {
+                console.log('✅ Login realizado via Google');
+                if (typeof notify !== 'undefined') {
+                    notify.success('Bem-vindo!', 'Login realizado com sucesso via Google!');
+                }
+            }
+            
+            // Recarregar os perfis
+            setTimeout(() => {
+                loadProfiles();
+            }, 1000);
+        }
     </script>
     <script src="notifications.js"></script>
 </body>
 </html>
+

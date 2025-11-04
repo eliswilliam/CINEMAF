@@ -155,7 +155,31 @@ async function getTopRatedMovies(language = 'pt-BR', page = 1) {
  * @returns {Object} - Informações formatadas
  */
 function formatMovieInfo(movie) {
+  // Extraire la bande-annonce YouTube depuis les vidéos
+  const trailerVideo = movie.videos?.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+  
+  // Extraire le réalisateur depuis les crédits
+  const director = movie.credits?.crew?.find(c => c.job === 'Director')?.name || 'N/A';
+  
+  // Extraire les scénaristes depuis les crédits
+  const writers = movie.credits?.crew?.filter(c => c.job === 'Writer' || c.job === 'Screenplay')
+    .map(w => w.name)
+    .slice(0, 2)
+    .join(', ') || 'N/A';
+  
+  // Formater la durée
+  const durationFormatted = movie.runtime 
+    ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m` 
+    : 'N/A';
+  
+  // Formater le budget et revenue
+  const formatCurrency = (amount) => {
+    if (!amount || amount === 0) return 'N/A';
+    return '$' + amount.toLocaleString('en-US');
+  };
+  
   return {
+    id: movie.id,
     titulo: movie.title || movie.original_title,
     tituloOriginal: movie.original_title,
     ano: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
@@ -165,9 +189,18 @@ function formatMovieInfo(movie) {
     posterUrl: movie.poster_path ? `${TMDB_IMAGE_BASE_URL}${movie.poster_path}` : null,
     backdropUrl: movie.backdrop_path ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}` : null,
     generos: movie.genres ? movie.genres.map(g => g.name).join(', ') : 'N/A',
-    duracao: movie.runtime ? `${movie.runtime} min` : 'N/A',
+    duracao: durationFormatted,
     idioma: movie.original_language,
-    popularidade: movie.popularity || 0
+    popularidade: movie.popularity || 0,
+    // Informations supplémentaires pour la page de détails
+    diretor: director,
+    roteirista: writers,
+    dataLancamento: movie.release_date || 'N/A',
+    orcamento: formatCurrency(movie.budget),
+    receita: formatCurrency(movie.revenue),
+    trailerYoutubeId: trailerVideo?.key || null,
+    status: movie.status || 'Released',
+    certificacao: 'PG-13' // TMDB ne fournit pas toujours cette info
   };
 }
 

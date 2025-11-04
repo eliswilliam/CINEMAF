@@ -3,8 +3,8 @@ const CONFIG = {
   // URL do backend - altere conforme necessário
     API_BASE_URL: 'https://cinemaf.onrender.com', // Backend em produção no Render
   
-  // Para produção, altere para:
-  // API_BASE_URL: 'https://seu-backend-producao.com',
+  // Para desenvolvimento local, altere para:
+  // API_BASE_URL: 'http://localhost:3001',
   
   // Endpoints da API
   ENDPOINTS: {
