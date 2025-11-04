@@ -18,11 +18,11 @@ html,body{
 }
 .site-title {
   text-align: center;
-  font-size: 80px;
+  font-size: 70px;
   font-weight: 800;
   font-family: 'Poppins', sans-serif;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin-top: 15px;
+  margin-bottom: 8px;
   letter-spacing: 3px;
 }
 
@@ -40,7 +40,7 @@ html,body{
   max-width: 390px;
   background-color: rgba(0, 0, 0, 0.2); 
   border-radius: 12px;
-  padding: 20px;
+  padding: 18px;
   backdrop-filter: blur(5px); 
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -64,10 +64,10 @@ html,body{
 .wrapper .slide-controls{
   position: relative;
   display: flex;
-  height: 50px;
+  height: 45px;
   width: 100%;
   overflow: hidden;
-  margin: 30px 0 10px 0;
+  margin: 20px 0 8px 0;
   justify-content: space-between;
   border-radius: 15px;
 }
@@ -131,9 +131,9 @@ input[type="radio"]{
   transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
 .form-inner form .field{
-  height: 50px;
+  height: 45px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 .form-inner form .field input{
   height: 100%;
@@ -157,11 +157,11 @@ form .field input:focus::placeholder{
   color: #5555FF;
 }
 .form-inner form .pass-link{
-  margin-top: 5px;
+  margin-top: 3px;
 }
 .form-inner form .signup-link{
   text-align: center;
-  margin-top: 30px;
+  margin-top: 15px;
   color: #F0F0F0;
 }
 .form-inner form .pass-link a,
@@ -174,7 +174,7 @@ form .field input:focus::placeholder{
   text-decoration: underline;
 }
 form .btn{
-  height: 50px;
+  height: 45px;
   width: 100%;
   border-radius: 15px;
   position: relative;
@@ -314,3 +314,65 @@ form .btn .submit-btn:disabled {
   font-size: 18px;
   font-weight: 600;
 }
+
+/* OAuth Divider */
+.oauth-divider {
+  text-align: center;
+  margin: 12px 0;
+  color: #999;
+  position: relative;
+}
+
+.oauth-divider span {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+}
+
+.oauth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #444;
+}
+
+/* OAuth Button */
+.oauth-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.google-btn {
+  background: #fff;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn:hover {
+  background: #f8f8f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.google-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+

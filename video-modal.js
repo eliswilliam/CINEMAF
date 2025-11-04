@@ -233,8 +233,48 @@
 
     /**
      * Attache les événements aux cartes de films
+     * REDIRIGE VERS LA PAGE DE DÉTAILS AU LIEU D'OUVRIR LE MODAL YOUTUBE
      */
     function attachMovieCardListeners() {
+        // Cartes de films dans les carousels - Redirige vers page de détails
+        const movieCards = document.querySelectorAll('.movie-card');
+        movieCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                const title = this.querySelector('.movie-title')?.textContent.trim();
+                const tmdbId = this.getAttribute('data-tmdb-id');
+                
+                if (tmdbId) {
+                    // Si un ID TMDB est disponible, l'utiliser en priorité
+                    window.location.href = `movie-details.html?id=${tmdbId}&title=${encodeURIComponent(title)}`;
+                } else if (title) {
+                    // Sinon, utiliser le titre pour la base locale
+                    window.location.href = `movie-details.html?title=${encodeURIComponent(title)}`;
+                }
+            });
+        });
+
+        // Hero slides - boutons "Assistir agora" - Redirige vers page de détails
+        const heroButtons = document.querySelectorAll('.hero-slide .btn-primary');
+        heroButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const heroSlide = this.closest('.hero-slide');
+                const title = heroSlide.querySelector('.hero-title')?.textContent.trim();
+                const tmdbId = heroSlide.getAttribute('data-tmdb-id');
+                
+                if (tmdbId) {
+                    // Si un ID TMDB est disponible, l'utiliser en priorité
+                    window.location.href = `movie-details.html?id=${tmdbId}&title=${encodeURIComponent(title)}`;
+                } else if (title) {
+                    // Sinon, utiliser le titre pour la base locale
+                    window.location.href = `movie-details.html?title=${encodeURIComponent(title)}`;
+                }
+            });
+        });
+        
+        // ===== CODE ORIGINAL YOUTUBE (pour réactiver les vidéos plus tard) =====
+        /*
         // Cartes de films dans les carousels
         const movieCards = document.querySelectorAll('.movie-card');
         movieCards.forEach(card => {
@@ -263,6 +303,7 @@
                 }
             });
         });
+        */
     }
 
     /**

@@ -140,6 +140,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // OAuth Buttons for Login and Signup
+  const googleLoginBtn = document.getElementById('googleLoginBtn');
+  const googleSignupBtn = document.getElementById('googleSignupBtn');
+
+  if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', () => {
+      console.log('🔐 Login via Google OAuth');
+      // Redirecionar para o endpoint OAuth de login do backend
+      window.location.href = `${CONFIG.API_BASE_URL}/auth/google/login`;
+    });
+  }
+
+  if (googleSignupBtn) {
+    googleSignupBtn.addEventListener('click', () => {
+      console.log('🔐 Cadastro via Google OAuth');
+      // Redirecionar para o endpoint OAuth de cadastro do backend
+      window.location.href = `${CONFIG.API_BASE_URL}/auth/google/signup`;
+    });
+  }
+
   // Fonction pour gérer les spinners dans les boutons
   function showSpinner(button, isLoading = true) {
     const btnText = button.querySelector('.btn-text');
