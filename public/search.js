@@ -274,7 +274,17 @@
         const numRating = parseFloat(rating);
         const filledStars = Math.round((numRating / 10) * 5);
         const emptyStars = 5 - filledStars;
-        return ''.repeat(filledStars) + ''.repeat(emptyStars);
+        
+        // Générer les étoiles avec animation en cascade
+        let starsHTML = '';
+        for (let i = 0; i < filledStars; i++) {
+            starsHTML += `<span style="animation-delay: ${i * 0.1}s">★</span>`;
+        }
+        for (let i = 0; i < emptyStars; i++) {
+            starsHTML += `<span style="animation-delay: ${(filledStars + i) * 0.1}s">☆</span>`;
+        }
+        
+        return starsHTML;
     }
 
     function createResultCard(item, index) {

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="notifications.css">
     <link rel="stylesheet" href="confirm-modal.css">
     <link rel="stylesheet" href="movie-details.css">
+    <link rel="stylesheet" href="favoritos.css">
 </head>
 <body>
 
@@ -36,6 +37,21 @@
         </div>
         
         <div class="header-actions">
+          <!-- Favoritos Menu -->
+          <div class="favoritos-menu-container">
+            <button class="favoritos-btn" id="favoritos-btn" aria-label="Meus Favoritos">
+              <svg class="popcorn-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 22V12c0-2.21 1.79-4 4-4h2c2.21 0 4 1.79 4 4v10"/>
+                <path d="M6 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                <path d="M18 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                <path d="M12 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                <path d="M9 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                <path d="M15 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+              </svg>
+              <span class="favoritos-count" id="favoritos-count">0</span>
+            </button>
+          </div>
+          
           <!-- Profile Menu -->
           <div class="profile-menu-container">
             <button class="profile-avatar-btn" id="profile-avatar-btn" aria-label="Menu de perfil">
@@ -151,11 +167,9 @@
                     <span class="movie-genres" id="movie-genres">Mystery & Thriller</span>
                 </div>
                 
-                <button class="add-watchlist-btn" id="add-watchlist-btn">
+                <button class="add-watchlist-btn" id="add-watchlist-btn" aria-label="Adicionar aos favoritos">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="16"></line>
-                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
                 </button>
             </div>
@@ -218,6 +232,60 @@
                 Two conspiracy obsessed young men kidnap the high-powered CEO of a major company, convinced that she is an alien intent on destroying planet Earth.
             </p>
             <button class="synopsis-expand" id="synopsis-expand">▼</button>
+        </div>
+    </div>
+
+    <!-- Seção de Avaliação do Usuário -->
+    <div class="section user-review-section">
+        <h2 class="section-title">Deixe sua Avaliação</h2>
+        
+        <div class="user-review-container">
+            <!-- Seletor de Estrelas -->
+            <div class="rating-input-wrapper">
+                <label class="rating-label">Sua nota:</label>
+                <div class="star-rating-input" id="star-rating-input">
+                    <span class="star-input" data-value="1">☆</span>
+                    <span class="star-input" data-value="2">☆</span>
+                    <span class="star-input" data-value="3">☆</span>
+                    <span class="star-input" data-value="4">☆</span>
+                    <span class="star-input" data-value="5">☆</span>
+                </div>
+                <span class="rating-value" id="rating-value">0/5</span>
+            </div>
+
+            <!-- Campo de Comentário -->
+            <div class="comment-input-wrapper">
+                <label class="comment-label" for="user-comment">Seu comentário:</label>
+                <textarea 
+                    id="user-comment" 
+                    class="user-comment-textarea" 
+                    placeholder="Compartilhe sua opinião sobre este filme... O que você achou da história, atuações, direção?"
+                    maxlength="500"
+                    rows="5"></textarea>
+                <div class="comment-footer">
+                    <span class="char-count" id="char-count">0/500</span>
+                    <button class="submit-review-btn" id="submit-review-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                        Publicar Avaliação
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Avaliações -->
+        <div class="reviews-list" id="reviews-list">
+            <h3 class="reviews-list-title">Avaliações da Comunidade</h3>
+            <div class="reviews-container" id="reviews-container">
+                <!-- Preenchido via JavaScript -->
+                <div class="no-reviews" id="no-reviews">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <p>Seja o primeiro a avaliar este filme!</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -934,6 +1002,8 @@
 <script src="profile-menu.js" defer></script>
 <script src="notifications.js"></script>
 <script src="confirm-modal.js"></script>
+<script src="favoritos.js"></script>
+<script src="user-reviews.js"></script>
 <script src="movie-details.js"></script>
 <script src="footer.js"></script>
 

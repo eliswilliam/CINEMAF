@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const emailRoutes = require('./email');
 const emailService = require('./services/emailService');
 const groqaiRoutes = require('../groqai');
@@ -40,6 +41,9 @@ app.get('/health', (req, res) => {
 
 // Routes API - priorité 1
 app.use('/api/users', userRoutes);
+
+// Routes Reviews (Avaliações)
+app.use('/api/reviews', reviewRoutes);
 
 // Routes Groq AI Chatbot
 app.use('/api', groqaiRoutes);

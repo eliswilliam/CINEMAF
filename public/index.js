@@ -763,8 +763,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.heroSlider = new HeroSlider('#hero-slider', { interval: UI_CONST.AUTOPLAY_INTERVAL_MS });
   console.log('HeroSlider inicializado');
 
-  // ===== UI: Modal de Configuração TMDB =====
-  // Modal simples para salvar/limpar a API key no localStorage.
   const modal = document.getElementById('tmdb-settings-modal');
   const btnOpen = document.getElementById('btn-open-settings');
   const input = document.getElementById('tmdb-key-input');
@@ -778,7 +776,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     lastFocus = document.activeElement;
     modal.hidden = false;
     setTimeout(() => input && input.focus(), 0);
-    // Preencher valor atual
     try { input.value = localStorage.getItem('tmdb_api_key') || ''; } catch (_) { input.value = ''; }
   }
   function closeModal() {
@@ -795,12 +792,17 @@ window.addEventListener('DOMContentLoaded', async () => {
   btnSave && btnSave.addEventListener('click', async () => {
     try { localStorage.setItem('tmdb_api_key', input.value.trim()); } catch (_) {}
     closeModal();
-    // Recarregar conteúdo via TMDB
+    if (typeof TMDBConfig !== 'undefined') {
+      TMDBConfig.atualizarBotaoTMDB();
+    }
     location.reload();
   });
   btnClear && btnClear.addEventListener('click', () => {
     try { localStorage.removeItem('tmdb_api_key'); } catch (_) {}
     closeModal();
+    if (typeof TMDBConfig !== 'undefined') {
+      TMDBConfig.atualizarBotaoTMDB();
+    }
     location.reload();
   });
 
