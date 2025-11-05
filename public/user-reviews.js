@@ -38,23 +38,50 @@ const UserReviews = {
 
     // Configurar event listeners
     setupEventListeners() {
+        console.log('🔧 setupEventListeners: Iniciando configuração...');
+        
         // Estrelas de rating
         const stars = document.querySelectorAll('.star-input');
-        stars.forEach(star => {
+        
+        if (stars.length === 0) {
+            console.error('❌ ERRO CRÍTICO: Nenhuma estrela encontrada no DOM!');
+            console.log('🔍 Verificando se elemento star-rating-input existe:', 
+                document.getElementById('star-rating-input'));
+            console.log('🔍 HTML do body:', document.body.innerHTML.substring(0, 500));
+            return;
+        }
+        
+        console.log(`✅ ${stars.length} estrelas encontradas`);
+        
+        stars.forEach((star, index) => {
+            console.log(`🌟 Configurando estrela ${index + 1}:`, {
+                element: star,
+                dataValue: star.dataset.value,
+                classes: star.className
+            });
+            
             star.addEventListener('click', (e) => {
+                console.log(`🖱️ CLIQUE na estrela ${e.target.dataset.value}`);
                 this.setRating(parseInt(e.target.dataset.value));
             });
 
             star.addEventListener('mouseenter', (e) => {
+                console.log(`🖱️ HOVER na estrela ${e.target.dataset.value}`);
                 this.highlightStars(parseInt(e.target.dataset.value));
             });
         });
+        
+        console.log('✅ Event listeners das estrelas configurados');
 
         const ratingContainer = document.getElementById('star-rating-input');
         if (ratingContainer) {
             ratingContainer.addEventListener('mouseleave', () => {
+                console.log('🖱️ Mouse saiu do container de estrelas');
                 this.highlightStars(this.currentRating);
             });
+            console.log('✅ Container de rating configurado');
+        } else {
+            console.warn('⚠️ Container star-rating-input não encontrado');
         }
 
         // Contador de caracteres
@@ -63,39 +90,65 @@ const UserReviews = {
             textarea.addEventListener('input', () => {
                 this.updateCharCount();
             });
+            console.log('✅ Textarea configurado:', {
+                id: textarea.id,
+                value: textarea.value,
+                maxLength: textarea.maxLength
+            });
+        } else {
+            console.error('❌ ERRO: Textarea user-comment não encontrado!');
         }
 
         // Botão de envio
         const submitBtn = document.getElementById('submit-review-btn');
         if (submitBtn) {
             submitBtn.addEventListener('click', () => {
+                console.log('🖱️ CLIQUE no botão Publicar Avaliação');
                 this.submitReview();
             });
+            console.log('✅ Botão de envio configurado:', {
+                id: submitBtn.id,
+                disabled: submitBtn.disabled,
+                innerHTML: submitBtn.innerHTML.substring(0, 50)
+            });
+        } else {
+            console.error('❌ ERRO: Botão submit-review-btn não encontrado!');
         }
+        
+        console.log('🔧 setupEventListeners: Configuração concluída!');
     },
 
     // Destacar estrelas
     highlightStars(count) {
+        console.log(`🌟 highlightStars chamado com count: ${count}`);
         const stars = document.querySelectorAll('.star-input');
+        console.log(`🌟 Estrelas encontradas para highlight: ${stars.length}`);
+        
         stars.forEach((star, index) => {
             if (index < count) {
                 star.textContent = '★';
                 star.classList.add('filled');
+                console.log(`  ⭐ Estrela ${index + 1}: preenchida`);
             } else {
                 star.textContent = '☆';
                 star.classList.remove('filled');
+                console.log(`  ☆ Estrela ${index + 1}: vazia`);
             }
         });
     },
 
     // Definir rating
     setRating(value) {
+        console.log(`⭐ setRating chamado com value: ${value}`);
         this.currentRating = value;
         this.highlightStars(value);
         
         const ratingValue = document.getElementById('rating-value');
         if (ratingValue) {
             ratingValue.textContent = `${value}/5`;
+            console.log(`✅ Rating value atualizado: ${value}/5`);
+        } else {
+            console.warn('⚠️ Elemento rating-value não encontrado');
         }
     },
 
@@ -283,11 +336,24 @@ const UserReviews = {
 
     // Submeter avaliação
     async submitReview() {
+        console.log('📤 submitReview: Iniciando submissão...');
+        console.log('⭐ Rating atual:', this.currentRating);
+        
         const textarea = document.getElementById('user-comment');
+        if (!textarea) {
+            console.error('❌ ERRO: Textarea não encontrado em submitReview');
+            return;
+        }
+        
         const comment = textarea.value.trim();
+        console.log('💬 Comentário:', {
+            length: comment.length,
+            preview: comment.substring(0, 50)
+        });
 
         // Validações
         if (this.currentRating === 0) {
+            console.warn('⚠️ Validação falhou: Rating = 0');
             if (window.notify) {
                 window.notify.warning('Atenção', 'Por favor, selecione uma nota de 1 a 5 estrelas');
             }
@@ -295,6 +361,7 @@ const UserReviews = {
         }
 
         if (comment.length === 0) {
+            console.warn('⚠️ Validação falhou: Comentário vazio');
             if (window.notify) {
                 window.notify.warning('Atenção', 'Por favor, escreva um comentário sobre o filme');
             }
@@ -302,11 +369,14 @@ const UserReviews = {
         }
 
         if (comment.length < 10) {
+            console.warn('⚠️ Validação falhou: Comentário muito curto');
             if (window.notify) {
                 window.notify.warning('Atenção', 'Seu comentário deve ter pelo menos 10 caracteres');
             }
             return;
         }
+
+        console.log('✅ Validações passaram!');
 
         // Criar objeto de avaliação
         const review = {
@@ -315,16 +385,21 @@ const UserReviews = {
             rating: this.currentRating,
             comment: comment
         };
+        
+        console.log('📦 Objeto de avaliação criado:', review);
 
         // Desabilitar botão durante envio
         const submitBtn = document.getElementById('submit-review-btn');
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Publicando...';
+            console.log('🔒 Botão desabilitado');
         }
 
         // Salvar avaliação no backend
+        console.log('📡 Chamando saveReview...');
         const success = await this.saveReview(review);
+        console.log('📡 saveReview retornou:', success);
 
         // Reabilitar botão
         if (submitBtn) {
@@ -335,9 +410,11 @@ const UserReviews = {
                 </svg>
                 Publicar Avaliação
             `;
+            console.log('🔓 Botão reabilitado');
         }
 
         if (success) {
+            console.log('✅ Avaliação publicada com sucesso!');
             // Limpar formulário
             this.resetForm();
 
@@ -348,6 +425,8 @@ const UserReviews = {
                     'Obrigado por compartilhar sua opinião sobre o filme'
                 );
             }
+        } else {
+            console.error('❌ Falha ao publicar avaliação');
         }
     },
 
@@ -443,11 +522,25 @@ const UserReviews = {
 
 // Inicializar quando o DOM estiver pronto
 if (document.readyState === 'loading') {
+    console.log('⏳ DOM ainda carregando, aguardando DOMContentLoaded...');
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('📄 DOMContentLoaded disparado!');
+        console.log('🔍 Estado do documento:', document.readyState);
+        console.log('🔍 Elementos no body:', document.body.children.length);
         UserReviews.init();
     });
 } else {
-    UserReviews.init();
+    console.log('✅ DOM já carregado (readyState: ' + document.readyState + ')');
+    console.log('🔍 Elementos no body:', document.body.children.length);
+    // Se o script for carregado após o DOM, usar setTimeout para garantir
+    setTimeout(() => {
+        console.log('⏰ setTimeout executado, verificando DOM novamente...');
+        console.log('🔍 Elementos no body agora:', document.body.children.length);
+        console.log('🔍 star-rating-input existe?', !!document.getElementById('star-rating-input'));
+        console.log('🔍 user-comment existe?', !!document.getElementById('user-comment'));
+        console.log('🔍 submit-review-btn existe?', !!document.getElementById('submit-review-btn'));
+        UserReviews.init();
+    }, 100);
 }
 
 // Exportar para window
