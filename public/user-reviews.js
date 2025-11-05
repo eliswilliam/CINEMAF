@@ -4,6 +4,9 @@
  * Backend: MongoDB via API REST
  */
 
+console.log('🚀🚀🚀 USER-REVIEWS.JS CARREGADO! 🚀🚀🚀');
+console.log('📍 Script URL:', document.currentScript ? document.currentScript.src : 'unknown');
+
 const UserReviews = {
     currentRating: 0,
     currentMovieId: null,
