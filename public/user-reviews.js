@@ -7,13 +7,16 @@
 const UserReviews = {
     currentRating: 0,
     currentMovieId: null,
-    apiBaseUrl: window.location.hostname === 'localhost' 
+    apiBaseUrl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? 'http://localhost:3001/api/reviews'
         : 'https://cinemaf.onrender.com/api/reviews',
 
     // Inicializar o sistema
     init() {
         console.log('🎬 UserReviews: Inicializando sistema de avaliações...');
+        console.log('🌐 API Base URL:', this.apiBaseUrl);
+        console.log('🌍 Hostname:', window.location.hostname);
+        console.log('📍 Full URL:', window.location.href);
         
         // Obter ID do filme da URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -23,6 +26,8 @@ const UserReviews = {
             console.warn('⚠️ ID do filme não encontrado na URL');
             return;
         }
+
+        console.log('🎬 Movie ID:', this.currentMovieId);
 
         this.setupEventListeners();
         this.loadReviews();
@@ -127,10 +132,19 @@ const UserReviews = {
     // Carregar avaliações do backend
     async loadReviews() {
         try {
+            const url = `${this.apiBaseUrl}/${this.currentMovieId}`;
             console.log(`📡 Carregando avaliações do filme ${this.currentMovieId}...`);
+            console.log(`🔗 URL completa: ${url}`);
             
-            const response = await fetch(`${this.apiBaseUrl}/${this.currentMovieId}`);
+            const response = await fetch(url);
+            console.log(`📥 Response status: ${response.status} ${response.statusText}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const result = await response.json();
+            console.log('📦 Dados recebidos:', result);
             
             if (!result.success) {
                 throw new Error(result.message || 'Erro ao carregar avaliações');
@@ -142,6 +156,10 @@ const UserReviews = {
             
         } catch (error) {
             console.error('❌ Erro ao carregar avaliações do servidor:', error);
+            console.error('❌ Error details:', {
+                message: error.message,
+                stack: error.stack
+            });
             
             // Fallback: tentar carregar do localStorage
             console.log('🔄 Tentando carregar do localStorage...');
