@@ -1,6 +1,6 @@
-Ôªø/**
- * Gestion de la recherche de films et s√©ries
- * Recherche via TMDB API si configur√©e, sinon catalogue local (data.js)
+/**
+ * Gestion de la recherche de films et sÈries
+ * Recherche via TMDB API si configurÈe, sinon catalogue local (data.js)
  */
 
 (function() {
@@ -22,25 +22,25 @@
     });
 
     /**
-     * V√©rifie si l'API TMDB est disponible (cl√© dans localStorage)
+     * VÈrifie si l'API TMDB est disponible (clÈ dans localStorage)
      */
     async function checkTMDBAvailability() {
-        // V√©rifier si une cl√© API est dans localStorage
+        // VÈrifier si une clÈ API est dans localStorage
         const apiKey = localStorage.getItem('tmdb_api_key');
         
         if (apiKey && apiKey.trim().length > 0) {
-            console.log('‚úÖ Cl√© API TMDB trouv√©e dans localStorage - recherche TMDB activ√©e');
+            console.log('? ClÈ API TMDB trouvÈe dans localStorage - recherche TMDB activÈe');
             tmdbAvailable = true;
             updateSearchIndicator(true);
         } else {
-            console.log('‚ÑπÔ∏è Pas de cl√© API TMDB - utilisation du catalogue local');
+            console.log('?? Pas de clÈ API TMDB - utilisation du catalogue local');
             tmdbAvailable = false;
             updateSearchIndicator(false);
         }
     }
 
     /**
-     * Met √† jour l'indicateur visuel TMDB
+     * Met ‡ jour l'indicateur visuel TMDB
      */
     function updateSearchIndicator(isTMDBActive) {
         const searchContainer = document.querySelector('.search-container');
@@ -52,7 +52,7 @@
             existingIndicator.remove();
         }
 
-        // Cr√©er un nouvel indicateur
+        // CrÈer un nouvel indicateur
         const indicator = document.createElement('span');
         indicator.className = 'tmdb-indicator';
         indicator.style.cssText = `
@@ -74,7 +74,7 @@
         indicator.textContent = isTMDBActive ? 'TMDB' : 'LOCAL';
         indicator.title = isTMDBActive ? 'Recherche via TMDB API' : 'Recherche dans le catalogue local';
 
-        // Ajouter position relative au conteneur si n√©cessaire
+        // Ajouter position relative au conteneur si nÈcessaire
         if (window.getComputedStyle(searchContainer).position === 'static') {
             searchContainer.style.position = 'relative';
         }
@@ -113,7 +113,7 @@
                 }
             });
         }
-        console.log('Filmes carregados do cat√°logo local: ' + allMovies.length);
+        console.log('Filmes carregados do cat·logo local: ' + allMovies.length);
     }
 
     function initSearchElements() {
@@ -124,7 +124,7 @@
     function createSearchOverlay() {
         searchOverlay = document.createElement('div');
         searchOverlay.className = 'search-results-overlay';
-        searchOverlay.innerHTML = '<div class=\"search-results-container\"><div class=\"search-results-header\"><div><h1 class=\"search-results-title\"><span>Resultados para</span>: <span class=\"search-query\"></span></h1><p class=\"search-results-count\"></p></div><button class=\"search-close-btn\" aria-label=\"Fechar resultados\">√ó</button></div><div class=\"search-results-content\"></div></div>';
+        searchOverlay.innerHTML = '<div class=\"search-results-container\"><div class=\"search-results-header\"><div><h1 class=\"search-results-title\"><span>Resultados para</span>: <span class=\"search-query\"></span></h1><p class=\"search-results-count\"></p></div><button class=\"search-close-btn\" aria-label=\"Fechar resultados\">◊</button></div><div class=\"search-results-content\"></div></div>';
         document.body.appendChild(searchOverlay);
         searchOverlay.querySelector('.search-close-btn').addEventListener('click', closeSearchResults);
         document.addEventListener('keydown', function(e) {
@@ -186,13 +186,13 @@
         try {
             const apiKey = localStorage.getItem('tmdb_api_key');
             if (!apiKey) {
-                console.log('‚ö†Ô∏è Pas de cl√© API, fallback vers catalogue local');
+                console.log('?? Pas de clÈ API, fallback vers catalogue local');
                 tmdbAvailable = false;
                 searchInLocalCatalog(query);
                 return;
             }
 
-            console.log('üîç Recherche TMDB directe pour:', query);
+            console.log('?? Recherche TMDB directe pour:', query);
             
             const response = await fetch(
                 `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}&language=pt-BR&page=1`,
@@ -210,26 +210,26 @@
 
             const data = await response.json();
 
-            // Convertir les r√©sultats TMDB au format attendu
+            // Convertir les rÈsultats TMDB au format attendu
             const tmdbResults = data.results.slice(0, 20).map(movie => ({
                 id: movie.id,
                 title: movie.title || movie.original_title,
                 year: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
                 rating: movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A',
-                description: movie.overview || 'Sinopse n√£o dispon√≠vel',
+                description: movie.overview || 'Sinopse n„o disponÌvel',
                 image: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
                 section: 'TMDB',
                 tmdbId: movie.id,
                 source: 'tmdb'
             }));
 
-            console.log(`‚úÖ ${tmdbResults.length} r√©sultats TMDB re√ßus`);
+            console.log(`? ${tmdbResults.length} rÈsultats TMDB reÁus`);
             displayResults(tmdbResults, 'TMDB');
 
         } catch (error) {
-            console.error('‚ùå Erreur recherche TMDB:', error);
+            console.error('? Erreur recherche TMDB:', error);
             // Fallback vers catalogue local en cas d'erreur
-            console.log('üîÑ Fallback vers catalogue local');
+            console.log('?? Fallback vers catalogue local');
             tmdbAvailable = false;
             searchInLocalCatalog(query);
         }
@@ -275,13 +275,13 @@
         const filledStars = Math.round((numRating / 10) * 5);
         const emptyStars = 5 - filledStars;
         
-        // G√©n√©rer les √©toiles avec animation en cascade
+        // GÈnÈrer les Ètoiles avec animation en cascade
         let starsHTML = '';
         for (let i = 0; i < filledStars; i++) {
-            starsHTML += `<span style="animation-delay: ${i * 0.1}s">‚òÖ</span>`;
+            starsHTML += `<span style="animation-delay: ${i * 0.1}s">?</span>`;
         }
         for (let i = 0; i < emptyStars; i++) {
-            starsHTML += `<span style="animation-delay: ${(filledStars + i) * 0.1}s">‚òÜ</span>`;
+            starsHTML += `<span style="animation-delay: ${(filledStars + i) * 0.1}s">?</span>`;
         }
         
         return starsHTML;
@@ -291,10 +291,10 @@
         const card = document.createElement('div');
         card.className = 'search-result-card';
         card.style.animationDelay = (index * 0.05) + 's';
-        const title = item.title || 'Sem t√≠tulo';
+        const title = item.title || 'Sem tÌtulo';
         const year = item.year || '';
         const rating = item.rating || 'N/A';
-        const description = item.description || 'Sem descri√ß√£o dispon√≠vel';
+        const description = item.description || 'Sem descriÁ„o disponÌvel';
         const section = item.section || '';
         const image = item.image || null;
         const tmdbId = item.id || item.tmdbId || null;
@@ -312,24 +312,24 @@
     }
 
     function showItemDetails(item) {
-        // Rediriger vers la page de d√©tails
-        const title = item.title || 'Sem t√≠tulo';
+        // Rediriger vers la page de dÈtails
+        const title = item.title || 'Sem tÌtulo';
         const tmdbId = item.id || item.tmdbId || null;
         const source = item.source || 'local';
         
-        console.log('üì∫ Ouverture des d√©tails:', { title, tmdbId, source });
+        console.log('?? Ouverture des dÈtails:', { title, tmdbId, source });
         
         if (source === 'tmdb' && tmdbId) {
-            // R√©sultat TMDB : charger les d√©tails depuis l'API TMDB via le backend
-            console.log('‚úÖ Chargement des d√©tails TMDB pour ID:', tmdbId);
+            // RÈsultat TMDB : charger les dÈtails depuis l'API TMDB via le backend
+            console.log('? Chargement des dÈtails TMDB pour ID:', tmdbId);
             window.location.href = `movie-details.html?id=${tmdbId}&source=tmdb&title=${encodeURIComponent(title)}`;
         } else if (tmdbId) {
-            // R√©sultat local avec ID TMDB : essayer TMDB d'abord
-            console.log('üìç R√©sultat local avec ID TMDB:', tmdbId);
+            // RÈsultat local avec ID TMDB : essayer TMDB d'abord
+            console.log('?? RÈsultat local avec ID TMDB:', tmdbId);
             window.location.href = `movie-details.html?id=${tmdbId}&title=${encodeURIComponent(title)}`;
         } else {
-            // R√©sultat local sans ID : utiliser le titre uniquement
-            console.log('üìÇ R√©sultat local, recherche par titre');
+            // RÈsultat local sans ID : utiliser le titre uniquement
+            console.log('?? RÈsultat local, recherche par titre');
             window.location.href = `movie-details.html?title=${encodeURIComponent(title)}`;
         }
     }

@@ -140,7 +140,7 @@
                 if (movieData.tmdb_id) {
                     // Rediriger vers movie-details.html avec les paramètres id et title
                     const encodedTitle = encodeURIComponent(movieData.title);
-                    window.location.href = `/public/movie-details.html?id=${movieData.tmdb_id}&title=${encodedTitle}`;
+                    window.location.href = `movie-details.html?id=${movieData.tmdb_id}&title=${encodedTitle}`;
                 } else {
                     // Si pas de TMDB ID, essayer d'enrichir le film d'abord
                     console.log('Enrichissement du film avant redirection:', movieData.title);
@@ -160,20 +160,20 @@
                                 
                                 // Redirection avec le TMDB ID nouvellement obtenu
                                 const encodedTitle = encodeURIComponent(enrichedMovie.title);
-                                window.location.href = `/public/movie-details.html?id=${enrichedMovie.tmdb_id}&title=${encodedTitle}`;
+                                window.location.href = `movie-details.html?id=${enrichedMovie.tmdb_id}&title=${encodedTitle}`;
                                 return;
                             }
                         }
                         
                         // Fallback: utiliser le titre pour la recherche sur movie-details.html
                         const encodedTitle = encodeURIComponent(movieData.title);
-                        window.location.href = `/public/movie-details.html?title=${encodedTitle}`;
+                        window.location.href = `movie-details.html?title=${encodedTitle}`;
                         
                     } catch (error) {
                         console.error('Erreur lors de l\'enrichissement:', error);
                         // Fallback: rediriger quand même avec le titre
                         const encodedTitle = encodeURIComponent(movieData.title);
-                        window.location.href = `/public/movie-details.html?title=${encodedTitle}`;
+                        window.location.href = `movie-details.html?title=${encodedTitle}`;
                     } finally {
                         // Restaurer l'état original (au cas où la redirection échoue)
                         this.style.opacity = '1';
