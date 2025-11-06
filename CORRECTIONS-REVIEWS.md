@@ -1,30 +1,30 @@
-# 🔧 Corrections du Système d'Évaluation (Reviews) - CINEMAF
+# 🔧 Correções do Sistema de Avaliação (Reviews) - CINEMAF
 
-## 📋 Problèmes Identifiés
+## 📋 Problemas Identificados
 
-### 1. **Configuration de l'URL de l'API**
-- **Problème**: L'URL de l'API était définie comme propriété statique, ce qui pouvait causer des problèmes
-- **Solution**: Convertie en getter pour détection dynamique de l'environnement
+### 1. **Configuração da URL da API**
+- **Problema**: A URL da API estava definida como propriedade estática, o que poderia causar problemas
+- **Solução**: Convertida em getter para detecção dinâmica do ambiente
 
-### 2. **Timing d'Initialisation du DOM**
-- **Problème**: Les éléments du DOM peuvent ne pas être disponibles au moment de l'initialisation
-- **Solution**: Amélioration de la logique de détection du readyState avec setTimeout de sécurité
+### 2. **Timing de Inicialização do DOM**
+- **Problema**: Os elementos do DOM podem não estar disponíveis no momento da inicialização
+- **Solução**: Melhoria da lógica de detecção do readyState com setTimeout de segurança
 
-### 3. **Logs de Débogage**
-- **Ajout**: Logs détaillés pour faciliter le diagnostic des problèmes
+### 3. **Logs de Depuração**
+- **Adição**: Logs detalhados para facilitar o diagnóstico dos problemas
 
-## ✅ Corrections Appliquées
+## ✅ Correções Aplicadas
 
-### Fichier: `public/user-reviews.js`
+### Arquivo: `public/user-reviews.js`
 
-#### 1. URL de l'API Dynamique
+#### 1. URL da API Dinâmica
 ```javascript
-// AVANT
+// ANTES
 apiBaseUrl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3001/api/reviews'
     : 'https://cinemaf.onrender.com/api/reviews',
 
-// APRÈS
+// DEPOIS
 get apiBaseUrl() {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         return 'http://localhost:3001/api/reviews';
@@ -33,162 +33,162 @@ get apiBaseUrl() {
 },
 ```
 
-#### 2. Initialisation Améliorée
-- Ajout de vérifications détaillées des éléments DOM
-- Logs de diagnostic pour chaque étape
-- Délai de sécurité avec setTimeout
+#### 2. Inicialização Melhorada
+- Adição de verificações detalhadas dos elementos DOM
+- Logs de diagnóstico para cada etapa
+- Delay de segurança com setTimeout
 
-## 🧪 Fichiers de Test Créés
+## 🧪 Arquivos de Teste Criados
 
 ### 1. `test-reviews.html`
-Interface web complète pour tester:
-- ✅ Connexion avec le backend
-- ✅ Création d'avaliações
+Interface web completa para testar:
+- ✅ Conexão com o backend
+- ✅ Criação de avaliações
 - ✅ Listagem de avaliações
 - ✅ Estatísticas de filmes
 
-**Comment utiliser:**
-1. Démarrer le serveur: `node src/app.js`
-2. Ouvrir: `http://localhost:3001/test-reviews.html`
-3. Tester chaque fonctionnalité
+**Como utilizar:**
+1. Iniciar o servidor: `node src/app.js`
+2. Abrir: `http://localhost:3001/test-reviews.html`
+3. Testar cada funcionalidade
 
 ### 2. `test-reviews-api.js`
-Script Node.js pour tester l'API directement:
+Script Node.js para testar a API diretamente:
 ```bash
 node test-reviews-api.js
 ```
 
-## 📝 Structure de l'API
+## 📝 Estrutura da API
 
 ### Backend Routes (`src/routes/reviewRoutes.js`)
 
 1. **GET /api/reviews/:movieId**
-   - Retourne toutes les évaluations d'un film
-   - Triées par date (plus récentes en premier)
+   - Retorna todas as avaliações de um filme
+   - Ordenadas por data (mais recentes primeiro)
 
 2. **POST /api/reviews**
-   - Crée une nouvelle évaluation
-   - Validations:
-     - Note: 1-5
-     - Commentaire: 10-500 caractères
-     - Tous les champs obligatoires
+   - Cria uma nova avaliação
+   - Validações:
+     - Nota: 1-5
+     - Comentário: 10-500 caracteres
+     - Todos os campos obrigatórios
 
 3. **GET /api/reviews/:movieId/stats**
-   - Retourne les statistiques d'un film
-   - Moyenne des notes
-   - Distribution des notes
+   - Retorna as estatísticas de um filme
+   - Média das notas
+   - Distribuição das notas
 
 4. **DELETE /api/reviews/:reviewId**
-   - Supprime une évaluation (modération)
+   - Deleta uma avaliação (moderação)
 
-## 🔍 Comment Vérifier que Tout Fonctionne
+## 🔍 Como Verificar que Tudo Funciona
 
-### Étape 1: Vérifier le Backend
+### Passo 1: Verificar o Backend
 ```bash
-# Démarrer le serveur
+# Iniciar o servidor
 cd c:\Users\elis\Downloads\ProjetoGUI\5novembre\CINEMAF
 node src/app.js
 ```
 
-Vous devriez voir:
+Você deve ver:
 ```
-✅ MongoDB connecté à Atlas !
+✅ MongoDB conectado a Atlas !
 🚀 Serveur démarré sur http://localhost:3001
 ```
 
-### Étape 2: Tester avec la Page de Test
-1. Ouvrir navigateur: `http://localhost:3001/test-reviews.html`
-2. Cliquer sur "Testar Conexão" ✅
-3. Créer une évaluation de test ⭐
-4. Vérifier la liste des évaluations 📋
-5. Voir les statistiques 📊
+### Passo 2: Testar com a Página de Teste
+1. Abrir navegador: `http://localhost:3001/test-reviews.html`
+2. Clicar em "Testar Conexão" ✅
+3. Criar uma avaliação de teste ⭐
+4. Verificar a lista das avaliações 📋
+5. Ver as estatísticas 📊
 
-### Étape 3: Tester sur la Page Réelle
-1. Ouvrir: `http://localhost:3001/movie-details.html?id=533535`
-2. Ouvrir la Console (F12)
-3. Vérifier les logs:
+### Passo 3: Testar na Página Real
+1. Abrir: `http://localhost:3001/movie-details.html?id=533535`
+2. Abrir o Console (F12)
+3. Verificar os logs:
    - `🚀🚀🚀 USER-REVIEWS.JS CARREGADO!`
    - `✅ UserReviews: Sistema pronto!`
    - `🌐 API Base URL: http://localhost:3001/api/reviews`
 
-4. Tester l'évaluation:
-   - Sélectionner des étoiles ⭐
-   - Écrire un commentaire 💬
-   - Cliquer sur "Publicar Avaliação" 📤
-   - Vérifier dans la console: `✅ Avaliação publicada com sucesso!`
+4. Testar a avaliação:
+   - Selecionar as estrelas ⭐
+   - Escrever um comentário 💬
+   - Clicar em "Publicar Avaliação" 📤
+   - Verificar no console: `✅ Avaliação publicada com sucesso!`
 
-## 🐛 Dépannage
+## 🐛 Solução de Problemas
 
-### Problème: "Erro ao carregar avaliações do servidor"
-**Solutions:**
-1. Vérifier que le serveur backend est démarré
-2. Vérifier l'URL dans la console: doit être `http://localhost:3001/api/reviews`
-3. Vérifier MongoDB: doit montrer `✅ MongoDB conectado`
+### Problema: "Erro ao carregar avaliações do servidor"
+**Soluções:**
+1. Verificar que o servidor backend está iniciado
+2. Verificar a URL no console: deve ser `http://localhost:3001/api/reviews`
+3. Verificar MongoDB: deve mostrar `✅ MongoDB conectado`
 
-### Problème: "Nenhuma estrela encontrada no DOM!"
-**Solutions:**
-1. Vérifier que vous êtes sur `movie-details.html`
-2. Attendre le chargement complet de la page
-3. Vérifier les logs d'initialisation dans la console
+### Problema: "Nenhuma estrela encontrada no DOM!"
+**Soluções:**
+1. Verificar que você está em `movie-details.html`
+2. Aguardar o carregamento completo da página
+3. Verificar os logs de inicialização no console
 
-### Problème: "Validação falhou: Rating = 0"
-**Solutions:**
-1. Cliquer sur les étoiles avant d'envoyer
-2. Vérifier dans la console que `setRating` est appelé
-3. Vérifier que `currentRating` est > 0
+### Problema: "Validação falhou: Rating = 0"
+**Soluções:**
+1. Clicar nas estrelas antes de enviar
+2. Verificar no console que `setRating` é chamado
+3. Verificar que `currentRating` é > 0
 
-## 📊 État Actuel du Système
+## 📊 Estado Atual do Sistema
 
 ### Backend ✅
-- [x] Routes configurées
-- [x] Controller implémenté
-- [x] Model MongoDB défini
-- [x] Validations en place
-- [x] Connexion MongoDB Atlas active
+- [x] Rotas configuradas
+- [x] Controller implementado
+- [x] Model MongoDB definido
+- [x] Validações em vigor
+- [x] Conexão MongoDB Atlas ativa
 
 ### Frontend ✅
-- [x] Interface utilisateur dans `movie-details.html`
-- [x] Script `user-reviews.js` corrigé
-- [x] Gestion des événements (clics, hover)
-- [x] Validation côté client
-- [x] Affichage des reviews
+- [x] Interface do usuário em `movie-details.html`
+- [x] Script `user-reviews.js` corrigido
+- [x] Gerenciamento de eventos (cliques, hover)
+- [x] Validação do lado do cliente
+- [x] Exibição das reviews
 - [x] Fallback localStorage
 
-### Tests ✅
-- [x] Page de test HTML créée
-- [x] Script de test API créé
-- [x] Documentation complète
+### Testes ✅
+- [x] Página de teste HTML criada
+- [x] Script de teste API criado
+- [x] Documentação completa
 
-## 🚀 Prochaines Étapes Recommandées
+## 🚀 Próximos Passos Recomendados
 
-1. **Tester en Production**
-   - Déployer sur Render
-   - Vérifier l'URL de production
-   - Tester avec de vrais utilisateurs
+1. **Testar em Produção**
+   - Deploy no Render
+   - Verificar a URL de produção
+   - Testar com usuários reais
 
-2. **Améliorations Futures**
-   - Authentification des utilisateurs
-   - Système de modération
-   - Possibilité d'éditer/supprimer ses propres reviews
-   - Système de likes/votes
-   - Filtres et tri des reviews
+2. **Melhorias Futuras**
+   - Autenticação dos usuários
+   - Sistema de moderação
+   - Possibilidade de editar/deletar suas próprias reviews
+   - Sistema de likes/votos
+   - Filtros e ordenação das reviews
 
-3. **Optimisations**
-   - Cache des reviews côté client
-   - Pagination pour grands volumes
-   - Compression des images d'avatars
-   - Rate limiting pour éviter le spam
+3. **Otimizações**
+   - Cache das reviews no lado do cliente
+   - Paginação para grandes volumes
+   - Compressão das imagens de avatares
+   - Rate limiting para evitar spam
 
-## 📞 Support
+## 📞 Suporte
 
-Si vous rencontrez des problèmes:
-1. Vérifiez les logs de la console (F12)
-2. Vérifiez les logs du serveur backend
-3. Utilisez `test-reviews.html` pour diagnostiquer
-4. Consultez cette documentation
+Se você encontrar problemas:
+1. Verifique os logs do console (F12)
+2. Verifique os logs do servidor backend
+3. Use `test-reviews.html` para diagnosticar
+4. Consulte esta documentação
 
 ---
 
-**Date de correction**: 5 novembre 2025  
-**Version**: 1.0  
-**Status**: ✅ Système Fonctionnel
+**Data de correção**: 5 de novembro de 2025  
+**Versão**: 1.0  
+**Status**: ✅ Sistema Funcional
