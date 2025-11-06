@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Login - CINEHOME</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a2e;
+      color: #fff;
+    }
+    .debug-section {
+      background: #16213e;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid #0f3460;
+    }
+    h2 {
+      color: #e94560;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #0f3460;
+      background: #0f3460;
+      color: #fff;
+    }
+    button {
+      padding: 12px 30px;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 5px;
+    }
+    button:hover {
+      background: #ff6584;
+    }
+    .log {
+      background: #0f0f0f;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      border-left: 3px solid #e94560;
+      padding-left: 10px;
+    }
+    .success { border-left-color: #4ecca3; color: #4ecca3; }
+    .error { border-left-color: #e94560; color: #e94560; }
+    .info { border-left-color: #4ea5d9; color: #4ea5d9; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Debug de Login - CINEHOME</h1>
+
+  <div class="debug-section">
+    <h2>1️⃣ Verificar Configuração</h2>
+    <button onclick="checkConfig()">Verificar CONFIG</button>
+    <button onclick="checkBackend()">Testar Backend Health</button>
+    <div id="configLog" class="log"></div>
+  </div>
+
+  <div class="debug-section">
+    <h2>2️⃣ Testar Login</h2>
+    <input type="email" id="testEmail" placeholder="Email" value="test@test.com">
+    <input type="password" id="testPassword" placeholder="Senha" value="test123">
+    <button onclick="testLogin()">Fazer Login</button>
+    <button onclick="testLoginVerbose()">Login Verbose (com todos os detalhes)</button>
+    <div id="loginLog" class="log"></div>
+  </div>
+
+  <div class="debug-section">
+    <h2>3️⃣ Verificar CORS e Fetch</h2>
+    <button onclick="testCORS()">Testar CORS</button>
+    <button onclick="testFetch()">Testar Fetch API</button>
+    <div id="corsLog" class="log"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="notifications.js"></script>
+  <script>
+    function log(containerId, message, type = 'info') {
+      const container = document.getElementById(containerId);
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+      container.appendChild(entry);
+      container.scrollTop = container.scrollHeight;
+      console.log(message);
+    }
+
+    function clearLog(containerId) {
+      document.getElementById(containerId).innerHTML = '';
+    }
+
+    function checkConfig() {
+      clearLog('configLog');
+      log('configLog', '📋 Verificando configuração...', 'info');
+      
+      if (typeof CONFIG === 'undefined') {
+        log('configLog', '❌ CONFIG não está definido!', 'error');
+        return;
+      }
+      
+      log('configLog', `✅ API_BASE_URL: ${CONFIG.API_BASE_URL}`, 'success');
+      log('configLog', `✅ LOGIN endpoint: ${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.LOGIN}`, 'success');
+      
+      if (typeof getApiUrl === 'function') {
+        log('configLog', `✅ getApiUrl('LOGIN'): ${getApiUrl('LOGIN')}`, 'success');
+      } else {
+        log('configLog', '❌ Função getApiUrl não encontrada!', 'error');
+      }
+    }
+
+    async function checkBackend() {
+      clearLog('configLog');
+      log('configLog', '🔍 Testando conexão com backend...', 'info');
+      
+      try {
+        const url = CONFIG.API_BASE_URL + '/health';
+        log('configLog', `📡 Conectando em: ${url}`, 'info');
+        
+        const response = await fetch(url);
+        log('configLog', `📥 Status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+        
+        const data = await response.json();
+        log('configLog', `✅ Resposta: ${JSON.stringify(data)}`, 'success');
+      } catch (error) {
+        log('configLog', `❌ Erro: ${error.message}`, 'error');
+      }
+    }
+
+    async function testLogin() {
+      clearLog('loginLog');
+      const email = document.getElementById('testEmail').value;
+      const password = document.getElementById('testPassword').value;
+      
+      log('loginLog', '🚀 Iniciando login...', 'info');
+      log('loginLog', `📧 Email: ${email}`, 'info');
+      log('loginLog', `🔐 Senha: ${'*'.repeat(password.length)}`, 'info');
+      
+      try {
+        const url = getApiUrl('LOGIN');
+        log('loginLog', `📡 URL: ${url}`, 'info');
+        
+        const payload = { email, password };
+        log('loginLog', `📦 Payload: ${JSON.stringify(payload)}`, 'info');
+        
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        log('loginLog', `📥 Status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+        
+        const data = await response.json();
+        log('loginLog', `📄 Resposta completa: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'error');
+        
+        if (response.ok && data.token) {
+          log('loginLog', '✅ LOGIN BEM-SUCEDIDO!', 'success');
+          log('loginLog', `🎫 Token recebido: ${data.token.substring(0, 50)}...`, 'success');
+          
+          // Simular o que o código real faz
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userEmail', email);
+          log('loginLog', '💾 Token e email salvos no localStorage', 'success');
+        } else {
+          log('loginLog', `❌ Login falhou: ${data.message || 'Erro desconhecido'}`, 'error');
+        }
+      } catch (error) {
+        log('loginLog', `❌ ERRO CAPTURADO: ${error.message}`, 'error');
+        log('loginLog', `📚 Stack trace: ${error.stack}`, 'error');
+      }
+    }
+
+    async function testLoginVerbose() {
+      clearLog('loginLog');
+      const email = document.getElementById('testEmail').value;
+      const password = document.getElementById('testPassword').value;
+      
+      log('loginLog', '🔍 MODO VERBOSE ATIVADO', 'info');
+      log('loginLog', '═'.repeat(50), 'info');
+      
+      // 1. Verificar CONFIG
+      log('loginLog', '1️⃣ Verificando CONFIG...', 'info');
+      log('loginLog', `   CONFIG existe? ${typeof CONFIG !== 'undefined'}`, 'info');
+      log('loginLog', `   getApiUrl existe? ${typeof getApiUrl === 'function'}`, 'info');
+      
+      if (typeof getApiUrl !== 'function') {
+        log('loginLog', '❌ ERRO CRÍTICO: getApiUrl não é uma função!', 'error');
+        return;
+      }
+      
+      const url = getApiUrl('LOGIN');
+      log('loginLog', `   URL completa: ${url}`, 'success');
+      log('loginLog', '═'.repeat(50), 'info');
+      
+      // 2. Preparar request
+      log('loginLog', '2️⃣ Preparando request...', 'info');
+      const payload = { email, password };
+      const payloadStr = JSON.stringify(payload);
+      log('loginLog', `   Payload: ${payloadStr}`, 'info');
+      log('loginLog', `   Tamanho: ${payloadStr.length} bytes`, 'info');
+      log('loginLog', '═'.repeat(50), 'info');
+      
+      // 3. Fazer request
+      log('loginLog', '3️⃣ Enviando request...', 'info');
+      
+      try {
+        const startTime = Date.now();
+        
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: payloadStr
+        });
+        
+        const endTime = Date.now();
+        const duration = endTime - startTime;
+        
+        log('loginLog', `   ⏱️  Tempo de resposta: ${duration}ms`, 'info');
+        log('loginLog', `   📊 Status: ${response.status}`, response.ok ? 'success' : 'error');
+        log('loginLog', `   📊 Status Text: ${response.statusText}`, response.ok ? 'success' : 'error');
+        log('loginLog', `   📊 Headers:`, 'info');
+        
+        for (const [key, value] of response.headers.entries()) {
+          log('loginLog', `      ${key}: ${value}`, 'info');
+        }
+        
+        log('loginLog', '═'.repeat(50), 'info');
+        
+        // 4. Processar resposta
+        log('loginLog', '4️⃣ Processando resposta...', 'info');
+        
+        const text = await response.text();
+        log('loginLog', `   📄 Resposta raw: ${text}`, 'info');
+        
+        let data;
+        try {
+          data = JSON.parse(text);
+          log('loginLog', `   ✅ JSON válido`, 'success');
+          log('loginLog', `   📦 Dados: ${JSON.stringify(data, null, 2)}`, 'success');
+        } catch (e) {
+          log('loginLog', `   ❌ Erro ao parsear JSON: ${e.message}`, 'error');
+          return;
+        }
+        
+        log('loginLog', '═'.repeat(50), 'info');
+        
+        // 5. Resultado final
+        log('loginLog', '5️⃣ Resultado:', 'info');
+        
+        if (response.ok) {
+          log('loginLog', '   ✅ ✅ ✅ LOGIN BEM-SUCEDIDO! ✅ ✅ ✅', 'success');
+          if (data.token) {
+            log('loginLog', `   🎫 Token: ${data.token.substring(0, 30)}...`, 'success');
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userEmail', email);
+            log('loginLog', '   💾 Dados salvos no localStorage', 'success');
+          }
+        } else {
+          log('loginLog', `   ❌ ❌ ❌ LOGIN FALHOU! ❌ ❌ ❌`, 'error');
+          log('loginLog', `   Mensagem: ${data.message || 'Sem mensagem'}`, 'error');
+        }
+        
+      } catch (error) {
+        log('loginLog', '═'.repeat(50), 'error');
+        log('loginLog', '❌ ❌ ❌ EXCEÇÃO CAPTURADA! ❌ ❌ ❌', 'error');
+        log('loginLog', `   Tipo: ${error.name}`, 'error');
+        log('loginLog', `   Mensagem: ${error.message}`, 'error');
+        log('loginLog', `   Stack: ${error.stack}`, 'error');
+      }
+    }
+
+    async function testCORS() {
+      clearLog('corsLog');
+      log('corsLog', '🌐 Testando CORS...', 'info');
+      
+      try {
+        const response = await fetch(CONFIG.API_BASE_URL + '/health', {
+          method: 'GET',
+        });
+        
+        log('corsLog', `✅ GET request bem-sucedida`, 'success');
+        log('corsLog', `   CORS Headers:`, 'info');
+        
+        const corsHeaders = [
+          'access-control-allow-origin',
+          'access-control-allow-credentials',
+          'access-control-allow-methods',
+          'access-control-allow-headers'
+        ];
+        
+        for (const header of corsHeaders) {
+          const value = response.headers.get(header);
+          if (value) {
+            log('corsLog', `   ${header}: ${value}`, 'success');
+          } else {
+            log('corsLog', `   ${header}: (não presente)`, 'info');
+          }
+        }
+        
+      } catch (error) {
+        log('corsLog', `❌ Erro CORS: ${error.message}`, 'error');
+      }
+    }
+
+    async function testFetch() {
+      clearLog('corsLog');
+      log('corsLog', '🔬 Testando Fetch API...', 'info');
+      
+      log('corsLog', `   fetch existe? ${typeof fetch === 'function'}`, 'info');
+      log('corsLog', `   Promise existe? ${typeof Promise === 'function'}`, 'info');
+      log('corsLog', `   JSON existe? ${typeof JSON === 'object'}`, 'info');
+      
+      try {
+        const testUrl = 'https://jsonplaceholder.typicode.com/posts/1';
+        log('corsLog', `   Testando com URL externa: ${testUrl}`, 'info');
+        
+        const response = await fetch(testUrl);
+        const data = await response.json();
+        
+        log('corsLog', `   ✅ Fetch API funciona corretamente`, 'success');
+        log('corsLog', `   Dados recebidos: ${JSON.stringify(data).substring(0, 100)}...`, 'success');
+      } catch (error) {
+        log('corsLog', `   ❌ Problema com Fetch API: ${error.message}`, 'error');
+      }
+    }
+
+    // Auto-executar verificações básicas ao carregar
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        log('configLog', '🚀 Página carregada, executando verificações automáticas...', 'info');
+        checkConfig();
+        setTimeout(checkBackend, 500);
+      }, 100);
+    });
+  </script>
+</body>
+</html>
