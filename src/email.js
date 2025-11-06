@@ -7,8 +7,9 @@ require('dotenv').config();
 const router = express.Router();
 
 // URLs configurables
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://cinemaf.onrender.com/reset.html';
-const FRONTEND_LOGIN_URL = process.env.FRONTEND_LOGIN_URL || 'https://cinemaf.onrender.com/profil.html';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://eliswilliam.github.io/CINEHOME---Homepage/reset.html';
+const FRONTEND_LOGIN_URL = process.env.FRONTEND_LOGIN_URL || 'https://eliswilliam.github.io/CINEHOME---Homepage/profil.html';
+const FRONTEND_ERROR_URL = process.env.FRONTEND_ERROR_URL || 'https://eliswilliam.github.io/CINEHOME---Homepage/login.html';
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
 
 // --- Google OAuth (pour récupération de mot de passe) ---
@@ -144,7 +145,7 @@ router.get('/auth/google/login/callback', async (req, res) => {
   
   if (!code) {
     console.error('❌ Aucun code reçu de Google');
-    return res.redirect(`https://cinemaf.onrender.com/login.html?error=no_code`);
+    return res.redirect(`${FRONTEND_ERROR_URL}?error=no_code`);
   }
   
   try {
@@ -167,7 +168,7 @@ router.get('/auth/google/login/callback', async (req, res) => {
 
     if (!accessToken) {
       console.error('❌ Pas de access_token');
-      return res.redirect(`https://cinemaf.onrender.com/login.html?error=no_token`);
+      return res.redirect(`${FRONTEND_ERROR_URL}?error=no_token`);
     }
 
     console.log('📤 Fetching user profile...');
@@ -183,7 +184,7 @@ router.get('/auth/google/login/callback', async (req, res) => {
 
     if (!email) {
       console.error('❌ Email not available');
-      return res.redirect(`https://cinemaf.onrender.com/login.html?error=no_email`);
+      return res.redirect(`${FRONTEND_ERROR_URL}?error=no_email`);
     }
 
     // Vérifier si l'utilisateur existe dans la base de données
@@ -191,7 +192,7 @@ router.get('/auth/google/login/callback', async (req, res) => {
 
     if (!user) {
       console.warn('⚠️ Utilisateur non trouvé - redirection vers cadastro');
-      return res.redirect(`https://cinemaf.onrender.com/login.html?error=user_not_found&email=${encodeURIComponent(email)}`);
+      return res.redirect(`${FRONTEND_ERROR_URL}?error=user_not_found&email=${encodeURIComponent(email)}`);
     }
 
     // Générer un token JWT pour l'utilisateur
@@ -203,7 +204,7 @@ router.get('/auth/google/login/callback', async (req, res) => {
     return res.redirect(`${FRONTEND_LOGIN_URL}?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`);
   } catch (err) {
     console.error('❌ Google OAuth LOGIN Error:', err?.response?.data || err.message || err);
-    return res.redirect(`https://cinemaf.onrender.com/login.html?error=oauth_failed`);
+    return res.redirect(`${FRONTEND_ERROR_URL}?error=oauth_failed`);
   }
 });
 
@@ -215,7 +216,7 @@ router.get('/auth/google/signup/callback', async (req, res) => {
   
   if (!code) {
     console.error('❌ Aucun code reçu de Google');
-    return res.redirect(`https://cinemaf.onrender.com/login.html?error=no_code`);
+    return res.redirect(`${FRONTEND_ERROR_URL}?error=no_code`);
   }
   
   try {
@@ -238,7 +239,7 @@ router.get('/auth/google/signup/callback', async (req, res) => {
 
     if (!accessToken) {
       console.error('❌ Pas de access_token');
-      return res.redirect(`https://cinemaf.onrender.com/login.html?error=no_token`);
+      return res.redirect(`${FRONTEND_ERROR_URL}?error=no_token`);
     }
 
     console.log('📤 Fetching user profile...');
@@ -254,7 +255,7 @@ router.get('/auth/google/signup/callback', async (req, res) => {
 
     if (!email) {
       console.error('❌ Email not available');
-      return res.redirect(`https://cinemaf.onrender.com/login.html?error=no_email`);
+      return res.redirect(`${FRONTEND_ERROR_URL}?error=no_email`);
     }
 
     // Vérifier si l'utilisateur existe déjà
@@ -291,7 +292,7 @@ router.get('/auth/google/signup/callback', async (req, res) => {
     return res.redirect(`${FRONTEND_LOGIN_URL}?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}&new=true`);
   } catch (err) {
     console.error('❌ Google OAuth SIGNUP Error:', err?.response?.data || err.message || err);
-    return res.redirect(`https://cinemaf.onrender.com/login.html?error=oauth_failed`);
+    return res.redirect(`${FRONTEND_ERROR_URL}?error=oauth_failed`);
   }
 });
 

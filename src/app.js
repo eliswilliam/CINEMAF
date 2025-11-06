@@ -13,17 +13,17 @@ const tmdbRoutes = require('../tmdbRoutes');
 
 const app = express();
 
-// Middlewares - Configuration CORS étendue pour Render
+// Middlewares - Configuration CORS permissive pour déploiement sur Render
+// Ici nous autorisons dynamiquement toutes les origines afin que le backend
+// accepte les requêtes depuis n'importe quel client (utile pour déploiement).
+// Note: si vous utilisez des cookies/session (credentials), `origin: true`
+// renvoie la valeur de l'en-tête Origin et permet credentials. Pour une
+// stricte production, remplacez cette configuration par une liste d'origines.
 app.use(cors({
-  origin: [
-    'http://localhost:3001',
-    'http://localhost:5500',
-    'http://127.0.0.1:5500',
-    'https://cinemaf.onrender.com'
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: true,       // reflète l'origine de la requête et autorise toutes les origines
+  credentials: true,  // permet l'envoi de cookies/credentials si nécessaire
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin']
 }));
 app.use(express.json());
 const path = require('path');
