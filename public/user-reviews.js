@@ -13,12 +13,26 @@ const UserReviews = {
     
     // Détection automatique de l'URL de l'API backend
     get apiBaseUrl() {
-        // En développement local (serveur front sur port 5500, backend sur 3001)
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            return 'http://localhost:3001/api/reviews';
+        // En production sur Render ou en développement local avec même domaine
+        const hostname = window.location.hostname;
+        const protocol = window.location.protocol;
+        const port = window.location.port;
+        
+        console.log('🌐 Détection de l\'environnement:', { hostname, protocol, port });
+        
+        // Si on est sur Render (cinemaf.onrender.com) ou localhost avec le backend sur le même port
+        if (hostname === 'cinemaf.onrender.com' || 
+            (hostname === 'localhost' && port === '3001') ||
+            (hostname === '127.0.0.1' && port === '3001')) {
+            const baseUrl = `${protocol}//${hostname}${port ? ':' + port : ''}/api/reviews`;
+            console.log('✅ Mode Production/Backend: API =', baseUrl);
+            return baseUrl;
         }
-        // En production sur Render
-        return 'https://cinemaf.onrender.com/api/reviews';
+        
+        // Développement local (serveur front sur port 5500, backend sur 3001)
+        const backendUrl = 'http://localhost:3001/api/reviews';
+        console.log('✅ Mode Développement: API =', backendUrl);
+        return backendUrl;
     },
 
     // Inicializar o sistema
@@ -200,11 +214,20 @@ const UserReviews = {
             console.log(`📡 Carregando avaliações do filme ${this.currentMovieId}...`);
             console.log(`🔗 URL completa: ${url}`);
             
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
+            
             console.log(`📥 Response status: ${response.status} ${response.statusText}`);
             
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('❌ Resposta de erro:', errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
             }
             
             const result = await response.json();
@@ -445,16 +468,27 @@ const UserReviews = {
     async saveReview(review) {
         try {
             console.log('📡 Enviando avaliação para o servidor...', review);
+            console.log('🔗 URL da API:', this.apiBaseUrl);
             
             const response = await fetch(this.apiBaseUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                mode: 'cors',
                 body: JSON.stringify(review)
             });
 
+            console.log('📥 Response status:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Resposta de erro:', errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+
             const result = await response.json();
+            console.log('📦 Resposta do servidor:', result);
 
             if (!result.success) {
                 throw new Error(result.message || 'Erro ao salvar avaliação');
@@ -469,6 +503,11 @@ const UserReviews = {
             
         } catch (error) {
             console.error('❌ Erro ao salvar no servidor:', error);
+            console.error('❌ Error completo:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
             
             // Fallback: salvar no localStorage
             if (window.notify) {

@@ -13,8 +13,18 @@ const tmdbRoutes = require('../tmdbRoutes');
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// Middlewares - Configuration CORS étendue pour Render
+app.use(cors({
+  origin: [
+    'http://localhost:3001',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'https://cinemaf.onrender.com'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 const path = require('path');
 
