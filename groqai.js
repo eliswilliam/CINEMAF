@@ -8,14 +8,8 @@ const { searchAndFormatMovie, getTMDBApiKey } = require('./tmdbService');
 
 const router = express.Router();
 
-// Inicializar cliente Groq com chave API (opcional)
-let groq = null;
-if (process.env.GROQ_API_KEY) {
-  groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-  console.log('✅ Groq AI configuré');
-} else {
-  console.warn('⚠️  GROQ_API_KEY manquante - Le chatbot AI ne sera pas disponible');
-}
+// Inicializar cliente Groq com chave API
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 /**
  * Função para obter resposta do chat Groq com contexto dos filmes
@@ -23,17 +17,6 @@ if (process.env.GROQ_API_KEY) {
  * @returns {Promise} - Promise com a resposta da API
  */
 async function getGroqChatCompletion(message) {
-  // Vérifier si Groq est disponible
-  if (!groq) {
-    return {
-      choices: [{
-        message: {
-          content: "⚠️ Le chatbot AI n'est pas disponible actuellement. La clé API Groq n'est pas configurée. Veuillez contacter l'administrateur."
-        }
-      }]
-    };
-  }
-  
   // Buscar informações relevantes sobre filmes na mensagem
   let context = "";
   let tmdbInfo = null;
