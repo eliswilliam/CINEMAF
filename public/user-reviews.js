@@ -10,9 +10,16 @@ console.log('📍 Script URL:', document.currentScript ? document.currentScript.
 const UserReviews = {
     currentRating: 0,
     currentMovieId: null,
-    apiBaseUrl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://localhost:3001/api/reviews'
-        : 'https://cinemaf.onrender.com/api/reviews',
+    
+    // Détection automatique de l'URL de l'API backend
+    get apiBaseUrl() {
+        // En développement local (serveur front sur port 5500, backend sur 3001)
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3001/api/reviews';
+        }
+        // En production sur Render
+        return 'https://cinemaf.onrender.com/api/reviews';
+    },
 
     // Inicializar o sistema
     init() {
@@ -20,6 +27,7 @@ const UserReviews = {
         console.log('🌐 API Base URL:', this.apiBaseUrl);
         console.log('🌍 Hostname:', window.location.hostname);
         console.log('📍 Full URL:', window.location.href);
+        console.log('🔗 URL completa da API:', this.apiBaseUrl);
         
         // Obter ID do filme da URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -530,6 +538,9 @@ if (document.readyState === 'loading') {
         console.log('📄 DOMContentLoaded disparado!');
         console.log('🔍 Estado do documento:', document.readyState);
         console.log('🔍 Elementos no body:', document.body.children.length);
+        console.log('🔍 star-rating-input existe?', !!document.getElementById('star-rating-input'));
+        console.log('🔍 user-comment existe?', !!document.getElementById('user-comment'));
+        console.log('🔍 submit-review-btn existe?', !!document.getElementById('submit-review-btn'));
         UserReviews.init();
     });
 } else {
@@ -537,7 +548,7 @@ if (document.readyState === 'loading') {
     console.log('🔍 Elementos no body:', document.body.children.length);
     // Se o script for carregado após o DOM, usar setTimeout para garantir
     setTimeout(() => {
-        console.log('⏰ setTimeout executado, verificando DOM novamente...');
+        console.log('⏰ setTimeout executado, inicializando UserReviews...');
         console.log('🔍 Elementos no body agora:', document.body.children.length);
         console.log('🔍 star-rating-input existe?', !!document.getElementById('star-rating-input'));
         console.log('🔍 user-comment existe?', !!document.getElementById('user-comment'));

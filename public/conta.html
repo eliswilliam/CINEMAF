@@ -9,9 +9,108 @@
   <link rel="stylesheet" href="layout.css">
   <link rel="stylesheet" href="notifications.css">
   <style>
+    :root{
+      --bg: #0f0f12;
+      --panel: #1a1b22;
+      --panel-2: #242632;
+      --text: #e8e8ee;
+      --muted: #a7a7b3;
+      --accent: #7a61ff;
+      --outline: #8d7eff;
+    }
+
+    /* Acessibilidade: oculto visual */
+    .visually-hidden{
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,1px,1px);
+      white-space: nowrap; border: 0;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 64px;
+      background: transparent;
+      border-right: none;
+      display: flex;
+      z-index: 1000;
+    }
+    .sidebar__nav{ width: 100%; }
+    .sidebar__list{
+      list-style: none;
+      margin: 0;
+      padding: 12px 0;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .sidebar__item{ width: 100%; }
+    .sidebar__link{
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 48px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 24px;
+      border-left: 3px solid transparent;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    .sidebar__link[aria-current="page"]{
+      border-left-color: var(--accent);
+    }
+    .sidebar__link:hover,
+    .sidebar__link:focus{
+      background: var(--panel-2);
+      outline: none;
+    }
+
+    /* Menu hamburger (3 barres) */
+    .sidebar__menu-toggle {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 48px;
+      background: transparent;
+      border: none;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .sidebar__menu-icon {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 20px;
+    }
+    .sidebar__menu-icon span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .sidebar__menu-toggle:hover,
+    .sidebar__menu-toggle:focus {
+      background: var(--panel-2);
+      outline: none;
+    }
+
+    @media (max-width: 600px){
+      .sidebar{ width: 56px; }
+      .sidebar__link{ height: 44px; font-size: 20px; }
+      .sidebar__menu-toggle { height: 44px; }
+    }
+
     .account-wrapper {
       max-width: 600px;
       width: 90%;
+      margin-left: 80px;
     }
 
     .account-header {
@@ -300,6 +399,53 @@
   </style>
 </head>
 <body>
+<!-- Sidebar -->
+<aside class="sidebar">
+  <nav class="sidebar__nav">
+    <ul class="sidebar__list">
+      <li class="sidebar__item">
+        <button class="sidebar__menu-toggle" aria-label="Menu">
+          <span class="sidebar__menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </li>
+      <li class="sidebar__item">
+        <a href="home.html" class="sidebar__link" aria-label="Accueil">
+          <span aria-hidden="true">🏠</span>
+          <span class="visually-hidden">Accueil</span>
+        </a>
+      </li>
+      <li class="sidebar__item">
+        <a href="categories.html" class="sidebar__link" aria-label="Catégories" style="pointer-events: none;">
+          <span aria-hidden="true">🔥</span>
+          <span class="visually-hidden">Catégories</span>
+        </a>
+      </li>
+      <li class="sidebar__item">
+        <a href="favoritos.html" class="sidebar__link" aria-label="Favoris" style="pointer-events: none;">
+          <span aria-hidden="true">💖</span>
+          <span class="visually-hidden">Favoris</span>
+        </a>
+      </li>
+      <li class="sidebar__item">
+        <a href="notifications.html" class="sidebar__link" aria-label="Notifications" style="pointer-events: none;">
+          <span aria-hidden="true">🔔</span>
+          <span class="visually-hidden">Notifications</span>
+        </a>
+      </li>
+      <li class="sidebar__item">
+        <a href="conta.html" class="sidebar__link" aria-current="page" aria-label="Paramètres">
+          <span aria-hidden="true">⚙️</span>
+          <span class="visually-hidden">Paramètres</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
 <h1 class="site-title">
   <span class="cine">CINE</span><span class="home">HOME</span>
 </h1>
