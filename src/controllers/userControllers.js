@@ -9,12 +9,13 @@ const verificationCodes = new Map();
 // Inscription
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const userExist = await User.findOne({ email });
-    if (userExist) return res.status(400).json({ message: 'Utilisateur déjà existant' });
+  const { email, password } = req.body;
+  const userExist = await User.findOne({ email });
+  if (userExist) return res.status(400).json({ message: 'Utilisateur déjà existant' });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ email, password: hashedPassword });
+  // Le mot de passe est hashé dans le hook pre('save') du modèle User.
+  // Ici on fournit le mot de passe en clair et le modèle s'occupe du hash.
+  const newUser = await User.create({ email, password });
 
     res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser });
   } catch (error) {
@@ -31,18 +32,20 @@ exports.login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ message: 'Mot de passe incorrect' });
+    
+    
+  // Utiliser la clé JWT depuis les variables d'environnement pour la sécurité
+  const jwtSecret = process.env.JWT_SECRET || 'dev-secret';
+  if (!process.env.JWT_SECRET) console.warn('⚠️ JWT_SECRET non défini. Utilisation du secret de développement (dev-secret). Configurez JWT_SECRET dans .env pour la production.');
 
-    // Utiliser la clé JWT depuis les variables d'environnement pour la sécurité
-    const jwtSecret = process.env.JWT_SECRET || 'dev-secret';
-    if (!process.env.JWT_SECRET) console.warn('⚠️ JWT_SECRET non défini. Utilisation du secret de développement (dev-secret). Configurez JWT_SECRET dans .env pour la production.');
+  const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
 
-    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
-
-    res.json({ message: 'Connexion réussie', token });
+  res.json({ message: 'Connexion réussie', token });
   } catch (error) {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
+
 
 // Envoyer code de récupération par email
 exports.forgotPassword = async (req, res) => {
@@ -132,6 +135,7 @@ exports.verifyResetCode = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
+
 
 // Réinitialiser le mot de passe via resetToken JWT
 exports.resetPassword = async (req, res) => {
