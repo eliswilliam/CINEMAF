@@ -1,6 +1,6 @@
 /**
- * Gestion de la recherche de films et sÈries
- * Recherche via TMDB API si configurÈe, sinon catalogue local (data.js)
+ * Gestion de la recherche de films et sÔøΩries
+ * Recherche via TMDB API si configurÔøΩe, sinon catalogue local (data.js)
  */
 
 (function() {
@@ -22,25 +22,25 @@
     });
 
     /**
-     * VÈrifie si l'API TMDB est disponible (clÈ dans localStorage)
+     * VÔøΩrifie si l'API TMDB est disponible (clÔøΩ dans localStorage)
      */
     async function checkTMDBAvailability() {
-        // VÈrifier si une clÈ API est dans localStorage
+        // VÔøΩrifier si une clÔøΩ API est dans localStorage
         const apiKey = localStorage.getItem('tmdb_api_key');
         
         if (apiKey && apiKey.trim().length > 0) {
-            console.log('? ClÈ API TMDB trouvÈe dans localStorage - recherche TMDB activÈe');
+            console.log('? ClÔøΩ API TMDB trouvÔøΩe dans localStorage - recherche TMDB activÔøΩe');
             tmdbAvailable = true;
             updateSearchIndicator(true);
         } else {
-            console.log('?? Pas de clÈ API TMDB - utilisation du catalogue local');
+            console.log('?? Pas de clÔøΩ API TMDB - utilisation du catalogue local');
             tmdbAvailable = false;
             updateSearchIndicator(false);
         }
     }
 
     /**
-     * Met ‡ jour l'indicateur visuel TMDB
+     * Met ÔøΩ jour l'indicateur visuel TMDB
      */
     function updateSearchIndicator(isTMDBActive) {
         const searchContainer = document.querySelector('.search-container');
@@ -52,7 +52,7 @@
             existingIndicator.remove();
         }
 
-        // CrÈer un nouvel indicateur
+        // CrÔøΩer un nouvel indicateur
         const indicator = document.createElement('span');
         indicator.className = 'tmdb-indicator';
         indicator.style.cssText = `
@@ -74,7 +74,7 @@
         indicator.textContent = isTMDBActive ? 'TMDB' : 'LOCAL';
         indicator.title = isTMDBActive ? 'Recherche via TMDB API' : 'Recherche dans le catalogue local';
 
-        // Ajouter position relative au conteneur si nÈcessaire
+        // Ajouter position relative au conteneur si nÔøΩcessaire
         if (window.getComputedStyle(searchContainer).position === 'static') {
             searchContainer.style.position = 'relative';
         }
@@ -113,7 +113,7 @@
                 }
             });
         }
-        console.log('Filmes carregados do cat·logo local: ' + allMovies.length);
+        console.log('Filmes carregados do catÔøΩlogo local: ' + allMovies.length);
     }
 
     function initSearchElements() {
@@ -124,7 +124,7 @@
     function createSearchOverlay() {
         searchOverlay = document.createElement('div');
         searchOverlay.className = 'search-results-overlay';
-        searchOverlay.innerHTML = '<div class=\"search-results-container\"><div class=\"search-results-header\"><div><h1 class=\"search-results-title\"><span>Resultados para</span>: <span class=\"search-query\"></span></h1><p class=\"search-results-count\"></p></div><button class=\"search-close-btn\" aria-label=\"Fechar resultados\">◊</button></div><div class=\"search-results-content\"></div></div>';
+        searchOverlay.innerHTML = '<div class=\"search-results-container\"><div class=\"search-results-header\"><div><h1 class=\"search-results-title\"><span>Resultados para</span>: <span class=\"search-query\"></span></h1><p class=\"search-results-count\"></p></div><button class=\"search-close-btn\" aria-label=\"Fechar resultados\">&times;</button></div><div class=\"search-results-content\"></div></div>';
         document.body.appendChild(searchOverlay);
         searchOverlay.querySelector('.search-close-btn').addEventListener('click', closeSearchResults);
         document.addEventListener('keydown', function(e) {
@@ -186,16 +186,17 @@
         try {
             const apiKey = localStorage.getItem('tmdb_api_key');
             if (!apiKey) {
-                console.log('?? Pas de clÈ API, fallback vers catalogue local');
+                console.log('?? Pas de clÔøΩ API, fallback vers catalogue local');
                 tmdbAvailable = false;
                 searchInLocalCatalog(query);
                 return;
             }
 
-            console.log('?? Recherche TMDB directe pour:', query);
+            console.log('üîç Recherche TMDB directe pour:', query);
             
+            // Utiliser search/multi pour chercher films ET s√©ries TV
             const response = await fetch(
-                `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}&language=pt-BR&page=1`,
+                `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}&language=pt-BR&page=1`,
                 {
                     method: 'GET',
                     headers: {
@@ -209,21 +210,27 @@
             }
 
             const data = await response.json();
+            
+            console.log('‚úÖ R√©sultats TMDB re√ßus:', data.results.length);
 
-            // Convertir les rÈsultats TMDB au format attendu
-            const tmdbResults = data.results.slice(0, 20).map(movie => ({
-                id: movie.id,
-                title: movie.title || movie.original_title,
-                year: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
-                rating: movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A',
-                description: movie.overview || 'Sinopse n„o disponÌvel',
-                image: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
+            // Convertir les r√©sultats TMDB au format attendu (films ET s√©ries)
+            const tmdbResults = data.results
+                .filter(item => item.media_type === 'movie' || item.media_type === 'tv') // Seulement films et s√©ries
+                .slice(0, 20)
+                .map(item => ({
+                    id: item.id,
+                    title: item.title || item.name || item.original_title || item.original_name,
+                    year: item.release_date ? item.release_date.split('-')[0] : (item.first_air_date ? item.first_air_date.split('-')[0] : 'N/A'),
+                    rating: item.vote_average ? item.vote_average.toFixed(1) : 'N/A',
+                    description: item.overview || 'Sinopse n√£o dispon√≠vel',
+                    image: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+                    mediaType: item.media_type, // 'movie' ou 'tv'
                 section: 'TMDB',
                 tmdbId: movie.id,
                 source: 'tmdb'
             }));
 
-            console.log(`? ${tmdbResults.length} rÈsultats TMDB reÁus`);
+            console.log(`? ${tmdbResults.length} rÔøΩsultats TMDB reÔøΩus`);
             displayResults(tmdbResults, 'TMDB');
 
         } catch (error) {
@@ -275,13 +282,13 @@
         const filledStars = Math.round((numRating / 10) * 5);
         const emptyStars = 5 - filledStars;
         
-        // GÈnÈrer les Ètoiles avec animation en cascade
+        // G√©n√©rer les √©toiles avec animation en cascade
         let starsHTML = '';
         for (let i = 0; i < filledStars; i++) {
-            starsHTML += `<span style="animation-delay: ${i * 0.1}s">?</span>`;
+            starsHTML += `<span style="animation-delay: ${i * 0.1}s">&#9733;</span>`;
         }
         for (let i = 0; i < emptyStars; i++) {
-            starsHTML += `<span style="animation-delay: ${(filledStars + i) * 0.1}s">?</span>`;
+            starsHTML += `<span style="animation-delay: ${(filledStars + i) * 0.1}s">&#9734;</span>`;
         }
         
         return starsHTML;
@@ -291,10 +298,10 @@
         const card = document.createElement('div');
         card.className = 'search-result-card';
         card.style.animationDelay = (index * 0.05) + 's';
-        const title = item.title || 'Sem tÌtulo';
+        const title = item.title || 'Sem tÔøΩtulo';
         const year = item.year || '';
         const rating = item.rating || 'N/A';
-        const description = item.description || 'Sem descriÁ„o disponÌvel';
+        const description = item.description || 'Sem descriÔøΩÔøΩo disponÔøΩvel';
         const section = item.section || '';
         const image = item.image || null;
         const tmdbId = item.id || item.tmdbId || null;
@@ -312,24 +319,26 @@
     }
 
     function showItemDetails(item) {
-        // Rediriger vers la page de dÈtails
-        const title = item.title || 'Sem tÌtulo';
+        // Rediriger vers la page de d√©tails
+        const title = item.title || 'Sem t√≠tulo';
         const tmdbId = item.id || item.tmdbId || null;
         const source = item.source || 'local';
+        const mediaType = item.mediaType || 'movie'; // Par d√©faut: movie
         
-        console.log('?? Ouverture des dÈtails:', { title, tmdbId, source });
+        console.log('üé¨ Ouverture des d√©tails:', { title, tmdbId, source, mediaType });
         
         if (source === 'tmdb' && tmdbId) {
-            // RÈsultat TMDB : charger les dÈtails depuis l'API TMDB via le backend
-            console.log('? Chargement des dÈtails TMDB pour ID:', tmdbId);
-            window.location.href = `movie-details.html?id=${tmdbId}&source=tmdb&title=${encodeURIComponent(title)}`;
+            // R√©sultat TMDB : ajouter le type de m√©dia dans l'URL
+            console.log('üì° Chargement des d√©tails TMDB pour ID:', tmdbId, 'Type:', mediaType);
+            window.location.href = `movie-details.html?id=${tmdbId}&type=${mediaType}&source=tmdb&title=${encodeURIComponent(title)}`;
         } else if (tmdbId) {
-            // RÈsultat local avec ID TMDB : essayer TMDB d'abord
-            console.log('?? RÈsultat local avec ID TMDB:', tmdbId);
-            window.location.href = `movie-details.html?id=${tmdbId}&title=${encodeURIComponent(title)}`;
+            // R√©sultat local avec ID TMDB : ajouter le type si disponible
+            console.log('üíæ R√©sultat local avec ID TMDB:', tmdbId, 'Type:', mediaType);
+            const typeParam = mediaType ? `&type=${mediaType}` : '';
+            window.location.href = `movie-details.html?id=${tmdbId}${typeParam}&title=${encodeURIComponent(title)}`;
         } else {
-            // RÈsultat local sans ID : utiliser le titre uniquement
-            console.log('?? RÈsultat local, recherche par titre');
+            // R√©sultat local sans ID : utiliser le titre uniquement
+            console.log('üîç R√©sultat local, recherche par titre');
             window.location.href = `movie-details.html?title=${encodeURIComponent(title)}`;
         }
     }

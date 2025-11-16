@@ -8,23 +8,6 @@
     <link rel="stylesheet" href="ajuda.css">
 </head>
 <body>
-    <!-- Barre d'icônes en haut -->
-    <div class="top-icons-bar">
-        <button class="icon-btn add-btn" title="Adicionar">
-            <span class="icon-plus">+</span>
-        </button>
-        <button class="icon-btn notification-btn" title="Notificações">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C11.172 2 10.5 2.672 10.5 3.5V4.1C8.053 4.567 6.25 6.704 6.25 9.25V14L4.5 15.75V17H19.5V15.75L17.75 14V9.25C17.75 6.704 15.947 4.567 13.5 4.1V3.5C13.5 2.672 12.828 2 12 2ZM10.5 19C10.5 20.381 11.619 21.5 13 21.5H11C11 20.119 10.5 19 10.5 19Z"/>
-            </svg>
-        </button>
-        <button class="icon-btn profile-btn" title="Perfil">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-            </svg>
-        </button>
-    </div>
-
     <a href="home.html" class="back-btn">← Voltar</a>
     
     <h1 class="site-title">
@@ -193,14 +176,6 @@
                 showError('Backend não está respondendo. Verifique a conexão com o servidor.');
             }
         });
-
-        // Redirecionar para a página de conta ao clicar no botão de perfil
-        const profileBtn = document.querySelector('.profile-btn');
-        if (profileBtn) {
-            profileBtn.addEventListener('click', () => {
-                window.location.href = 'conta.html';
-            });
-        }
     </script>
 </body>
 </html>

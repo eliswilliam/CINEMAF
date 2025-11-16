@@ -6,355 +6,12 @@
     <link rel="icon" type="image/png" href="img/favicon.ico"/>
     <title>Meus Favoritos | CineHome</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="movie-details.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="footer-content.css">
     <link rel="stylesheet" href="profile-menu.css">
     <link rel="stylesheet" href="notifications.css">
-    <link rel="stylesheet" href="favoritos.css">
-    <style>
-        /* Estilos específicos da página de favoritos */
-        .favoritos-page-container {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            padding-top: 80px;
-        }
-
-        .favoritos-page-header {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 4%;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(-5px);
-        }
-
-        .favoritos-page-title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-        }
-
-        .favoritos-page-title h1 {
-            font-size: 36px;
-            font-weight: 700;
-            color: #fff;
-            margin: 0;
-        }
-
-        .favoritos-page-title .popcorn-icon {
-            stroke: #FFD700;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-        }
-
-        .favoritos-count-badge {
-            background: var(--accent-color);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(95, 93, 255, 0.3);
-        }
-
-        .favoritos-page-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 4% 60px;
-        }
-
-        .favoritos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-        }
-
-        .favorito-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .favorito-card:hover {
-            transform: scale(1.05) translateY(-10px);
-            z-index: 10;
-            box-shadow: 0 12px 40px rgba(95, 93, 255, 0.3);
-        }
-
-        .favorito-card-poster {
-            width: 100%;
-            height: 270px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .favorito-card:hover .favorito-card-poster {
-            transform: scale(1.1);
-        }
-
-        .favorito-card-content {
-            padding: 12px;
-            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .favorito-card:hover .favorito-card-content {
-            transform: translateY(0);
-        }
-
-        .favorito-card-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #fff;
-            margin: 0 0 4px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .favorito-card-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .favorito-card-year {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .favorito-card-rating {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.8rem;
-            color: #FFD700;
-            font-weight: 600;
-        }
-
-        .favorito-card-rating .stars {
-            color: #ffd700;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        .favorito-card-remove {
-            width: 100%;
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #EF4444;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 6px;
-        }
-
-        .favorito-card-remove:hover {
-            background: rgba(239, 68, 68, 0.3);
-            border-color: #EF4444;
-        }
-
-        .favoritos-empty {
-            text-align: center;
-            padding: 100px 20px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .favoritos-empty svg {
-            margin-bottom: 30px;
-        }
-
-        .favoritos-empty h2 {
-            font-size: 28px;
-            margin: 20px 0 10px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .favoritos-empty p {
-            font-size: 16px;
-            margin: 10px 0 30px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-explore {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-explore:hover {
-            background: #4a48cc;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(95, 93, 255, 0.4);
-        }
-
-        /* Toast Notification */
-        .toast-notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(20, 20, 20, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px 24px;
-            color: white;
-            font-size: 14px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-        }
-
-        .toast-notification.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .toast-notification.success {
-            border-left: 4px solid #10b981;
-        }
-
-        .toast-notification.error {
-            border-left: 4px solid #EF4444;
-        }
-
-        @media (max-width: 1200px) {
-            .favoritos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .favoritos-page-header {
-                padding: 30px 4%;
-            }
-
-            .favoritos-page-title h1 {
-                font-size: 28px;
-            }
-
-            .favoritos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-                gap: 10px;
-            }
-            
-            .favorito-card-poster {
-                height: 165px;
-            }
-            
-            .favorito-card-content {
-                padding: 8px;
-            }
-            
-            .favorito-card-title {
-                font-size: 0.75rem;
-                margin-bottom: 3px;
-            }
-            
-            .favorito-card-year {
-                font-size: 0.65rem;
-            }
-            
-            .favorito-card-rating {
-                font-size: 0.65rem;
-            }
-            
-            .favorito-card-rating .stars {
-                font-size: 0.7rem;
-            }
-            
-            .favorito-card-remove {
-                padding: 6px;
-                font-size: 10px;
-                margin-top: 4px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .favoritos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
-                gap: 8px;
-            }
-            
-            .favorito-card-poster {
-                height: 142px;
-            }
-            
-            .favorito-card-content {
-                padding: 6px;
-            }
-            
-            .favorito-card-title {
-                font-size: 0.7rem;
-            }
-            
-            .favorito-card-year {
-                font-size: 0.6rem;
-            }
-            
-            .favorito-card-rating {
-                font-size: 0.6rem;
-            }
-            
-            .favorito-card-rating .stars {
-                font-size: 0.65rem;
-            }
-            
-            .favorito-card-remove {
-                padding: 5px;
-                font-size: 9px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="favoritos-page.css">
 </head>
 <body>
 
@@ -381,14 +38,19 @@
           <!-- Favoritos Menu -->
           <div class="favoritos-menu-container">
             <button class="favoritos-btn" id="favoritos-btn" aria-label="Meus Favoritos">
-              <svg class="popcorn-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 22V12c0-2.21 1.79-4 4-4h2c2.21 0 4 1.79 4 4v10"/>
-                <path d="M6 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                <path d="M18 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                <path d="M12 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                <path d="M9 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                <path d="M15 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-              </svg>
+               <style>
+                .heart-icon path {
+                    fill: none;
+                    stroke: white;
+                    stroke-width: 1.8;
+                    transition: fill 0.25s ease, stroke 0.25s ease;
+                }
+                .heart-icon:hover path {
+                    fill: white;
+                    stroke: white;
+                }
+                </style>
+                <svg class="heart-icon" viewBox="0 0 24 24" width="26" height="26" xmlns="http://www.w3.org/2000/svg"> <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3 c1.74 0 3.41 0.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/> </svg>
               <span class="favoritos-count" id="favoritos-count">0</span>
             </button>
           </div>
@@ -514,15 +176,20 @@
         </button>
         
         <div class="favoritos-page-title">
-            <svg class="popcorn-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 22V12c0-2.21 1.79-4 4-4h2c2.21 0 4 1.79 4 4v10"/>
-                <path d="M6 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                <path d="M18 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                <path d="M12 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-            </svg>
+             <style>
+                </style>
+               <svg viewBox="0 0 24 24" width="32" height="32"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="white" stroke="none">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                 C13.09 3.81 14.76 3 16.5 3
+                19.58 3 22 5.42 22 8.5
+                c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+ 
             <h1>Meus Favoritos</h1>
         </div>
-        
         <div class="favoritos-count-badge" id="favoritosCountBadge">
             0 filmes
         </div>
@@ -782,6 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Remover evento de clique do botão de perfil
     const profileBtn = document.getElementById('profile-avatar-btn');
     const profileDropdown = document.getElementById('profile-dropdown');
+    const favoritosMenu = document.querySelector('.favoritos-menu-container');
     
     if (profileBtn && profileDropdown) {
         // Desabilitar abertura do dropdown
@@ -799,6 +467,12 @@ document.addEventListener('DOMContentLoaded', () => {
         profileBtn.parentNode.replaceChild(newProfileBtn, profileBtn);
         
         console.log('🚫 Menu de perfil desabilitado na página de favoritos');
+    }
+
+    // Remover completamente o ícone de favoritos do menu nesta página
+    if (favoritosMenu) {
+        favoritosMenu.remove();
+        console.log('💔 Ícone de favoritos removido desta página.');
     }
 });
 </script>
